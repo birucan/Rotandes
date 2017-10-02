@@ -1,2 +1,2 @@
-# Rotandes
-Iteracion 2 sistrans
+# java-server
+Basic REST/JDBC server based on RedHat Wildfly
