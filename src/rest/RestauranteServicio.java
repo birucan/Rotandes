@@ -10,8 +10,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
 import tm.RotondAndesTM;
+import vos.Producto;
 import vos.Restaurante;
 
 @Path("restaurantes")
@@ -38,4 +38,20 @@ public class RestauranteServicio {
 		}
 		return Response.status(200).entity(rotonda).build();
 	}
+	
+	@POST
+	@Path("/{idRestaurante}/producto")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registrarProducto(@PathParam("idRestaurante") int idRestaurante, Producto producto){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.registrarProducto(idRestaurante, producto);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(producto).build();
+	}
+	
+	
 }
