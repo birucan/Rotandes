@@ -6,6 +6,18 @@ public class Restaurante {
 	@JsonProperty(value="id")
 	private long id;
 	
+	@JsonProperty(value="nombre")
+	private String nombre;
+	
+	@JsonProperty(value="descripcion")
+	private String descripcion;
+	
+	@JsonProperty(value="tipoComida")
+	private String tipoComida;
+	
+	@JsonProperty(value="paginaWeb")
+	private String paginaWeb;
+	
 	public long getId() {
 		return id;
 	}
@@ -46,17 +58,7 @@ public class Restaurante {
 		this.paginaWeb = paginaWeb;
 	}
 
-	@JsonProperty(value="nombre")
-	private String nombre;
-	
-	@JsonProperty(value="descripcion")
-	private String descripcion;
-	
-	@JsonProperty(value="tipoComida")
-	private String tipoComida;
-	
-	@JsonProperty(value="paginaWeb")
-	private String paginaWeb;
+
 	
 	public Restaurante(@JsonProperty(value="id")long aId, @JsonProperty(value="nombre")String aNombre, @JsonProperty(value="descripcion")String aDescripcion,
 			@JsonProperty(value="tipoComida")String aTipoComida, @JsonProperty(value="paginaWeb")String aPaginaWeb){

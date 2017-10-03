@@ -20,10 +20,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import dao.DAOTablaIngredientes;
 import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
 import dao.DAOTablaRotonda;
 import dao.DAOTablaUsuarios;
+import vos.Ingrediente;
 import vos.Producto;
 import vos.Restaurante;
 import vos.Rotonda;
@@ -254,6 +256,39 @@ public class RotondAndesTM {
 					throw exception;
 				}
 			}
+		}
+
+		public void registrarIngrediente(int idRestaurante, int idProducto, Ingrediente ingrediente) throws Exception {
+			DAOTablaIngredientes daoIngredientes = new DAOTablaIngredientes();
+			try 
+			{
+				
+				this.conn = darConexion();
+				daoIngredientes.setConn(conn);
+				System.out.println("aca 1");
+				daoIngredientes.addIngrediente(ingrediente);
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoIngredientes.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
 		}
 
 

@@ -20,9 +20,13 @@ public class Producto {
 	@JsonProperty(value="idRest")
 	private long idRest;
 
+	@JsonProperty(value="precio")
+	private long precio;
 
 
-	public Producto(@JsonProperty(value="id")long id, @JsonProperty(value="nombre")String nombre, @JsonProperty(value="descripcionES")String descripcionES, @JsonProperty(value="descripcionEN")String descripcionEN, @JsonProperty(value="tipo")String tipo, @JsonProperty(value="idRest")long idRest) {
+
+	public Producto(@JsonProperty(value="id")long id, @JsonProperty(value="nombre")String nombre, @JsonProperty(value="descripcionES")String descripcionES, @JsonProperty(value="descripcionEN")String descripcionEN, @JsonProperty(value="tipo")String tipo, @JsonProperty(value="idRest")long idRest,@JsonProperty(value="precio")
+	 long aprecio) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -30,6 +34,8 @@ public class Producto {
 		this.descripcionEN = descripcionEN;
 		this.tipo = tipo;
 		this.idRest = idRest;
+		this.precio = aprecio;
+		
 	}
 
 	public long getId() {
@@ -78,5 +84,12 @@ public class Producto {
 
 	public void setIdRest(long idRest) {
 		this.idRest = idRest;
+	}
+	public long getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(long precio) {
+		this.precio = precio;
 	}
 }
