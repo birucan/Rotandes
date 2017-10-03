@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
 import vos.Ingrediente;
+import vos.Menu;
 import vos.Producto;
 import vos.Restaurante;
 
@@ -67,6 +68,18 @@ public class RestauranteServicio {
 		}
 		return Response.status(200).entity(ingrediente).build();
 	}
-	
+	@POST
+	@Path("/{idRestaurante}/menu")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registrarMenu(@PathParam("idRestaurante")int idRestaurante, Menu menu){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.registrarMenu(idRestaurante, menu);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(menu).build();
+	}
 	
 }

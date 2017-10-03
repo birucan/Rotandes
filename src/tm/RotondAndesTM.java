@@ -21,11 +21,13 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.DAOTablaIngredientes;
+import dao.DAOTablaMenus;
 import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
 import dao.DAOTablaRotonda;
 import dao.DAOTablaUsuarios;
 import vos.Ingrediente;
+import vos.Menu;
 import vos.Producto;
 import vos.Restaurante;
 import vos.Rotonda;
@@ -280,6 +282,39 @@ public class RotondAndesTM {
 			} finally {
 				try {
 					daoIngredientes.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+		}
+
+		public void registrarMenu(int idRestaurante, Menu menu) throws Exception {
+			DAOTablaMenus daoMenus = new DAOTablaMenus();
+			try 
+			{
+				
+				this.conn = darConexion();
+				daoMenus.setConn(conn);
+				System.out.println("aca 1");
+				daoMenus.addMenu(menu);
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoMenus.cerrarRecursos();
 					if(this.conn!=null)
 						this.conn.close();
 				} catch (SQLException exception) {
