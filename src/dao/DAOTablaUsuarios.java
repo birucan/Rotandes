@@ -200,4 +200,26 @@ public class DAOTablaUsuarios {
 		prepStmt.executeQuery();
 	}
 
+	public void makeAdmin(int idUsuario) {
+		try {
+			Usuario foo = buscarUsuarioPorId((long) idUsuario);
+			if(foo.getTipoUsuario().contains("admin")){
+				foo.setTipoUsuario("cliente");
+				updateUsuario(foo);
+			}else if(foo.getTipoUsuario().contains("cliente")){
+				foo.setTipoUsuario("admin");
+				updateUsuario(foo);
+			}else{
+				foo.setTipoUsuario("admin");
+				updateUsuario(foo);
+			}
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
 }

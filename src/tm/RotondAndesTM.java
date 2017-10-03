@@ -20,8 +20,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import dao.DAOTablaRestaurantes;
 import dao.DAOTablaRotonda;
 import dao.DAOTablaUsuarios;
+import vos.Restaurante;
 import vos.Rotonda;
 import vos.Usuario;
 
@@ -113,7 +115,7 @@ public class RotondAndesTM {
 	}
 
 		/**
-		 * RF1
+		 * RF1 y RF2
 		 * @param usuario
 		 * @throws Exception
 		 */
@@ -149,6 +151,74 @@ public class RotondAndesTM {
 			}
 			
 	}
+		/**
+		 * 
+		 * @param idUsuario
+		 */
+		public void makeAdmim(int idUsuario) throws SQLException{
+				DAOTablaUsuarios daoTablaUsuarios = new DAOTablaUsuarios();
+				try 
+				{
+					this.conn = darConexion();
+					daoTablaUsuarios.setConn(conn);
+					daoTablaUsuarios.makeAdmin(idUsuario);
+					conn.commit();
+				} catch (SQLException e) {
+					System.err.println("SQLException:" + e.getMessage());
+					e.printStackTrace();
+					conn.rollback();
+					throw e;
+				} catch (Exception e) {
+					System.err.println("GeneralException:" + e.getMessage());
+					e.printStackTrace();
+					conn.rollback();
+					throw e;
+				} finally {
+					try {
+						daoTablaUsuarios.cerrarRecursos();
+						if(this.conn!=null)
+							this.conn.close();
+					} catch (SQLException exception) {
+						System.err.println("SQLException closing resources:" + exception.getMessage());
+						exception.printStackTrace();
+						throw exception;
+					}
+				}
+			}
+		/*
+		 * RF3
+		 */
+		public void registrarRestaurante(Restaurante foo) throws Exception {
+			DAOTablaRestaurantes daoRestaurantes = new DAOTablaRestaurantes();
+			try 
+			{
+				
+				this.conn = darConexion();
+				daoRestaurantes.setConn(conn);
+				daoRestaurantes.addRestaurante(foo);
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoRestaurantes.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+		}		
 		
 	
 
