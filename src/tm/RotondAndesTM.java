@@ -22,6 +22,7 @@ import java.util.Properties;
 
 import dao.DAOTablaIngredientes;
 import dao.DAOTablaMenus;
+import dao.DAOTablaPreferenciaClientes;
 import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
 import dao.DAOTablaRotonda;
@@ -29,6 +30,7 @@ import dao.DAOTablaUsuarios;
 import dao.DAOTablaZonas;
 import vos.Ingrediente;
 import vos.Menu;
+import vos.PreferenciaCliente;
 import vos.Producto;
 import vos.Restaurante;
 import vos.Rotonda;
@@ -364,6 +366,77 @@ public class RotondAndesTM {
 				}
 			}
 			
+		}
+
+		public void registrarPreferencia(int idUsuario, PreferenciaCliente preferencia) throws Exception {
+			DAOTablaPreferenciaClientes daoPreferencia = new DAOTablaPreferenciaClientes();
+			try 
+			{
+
+				this.conn = darConexion();
+				daoPreferencia.setConn(conn);
+				preferencia.setIdClient(idUsuario);
+				daoPreferencia.addPreferenciaCliente(preferencia);
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPreferencia.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+		}
+
+		public void quitarPreferencia(int idUsuario, PreferenciaCliente preferencia) throws Exception {
+			DAOTablaUsuarios daoUsuarios = new DAOTablaUsuarios();
+			DAOTablaPreferenciaClientes daoPreferencias = new DAOTablaPreferenciaClientes();
+			try 
+			{
+				this.conn = darConexion();
+				daoPreferencias.setConn(conn);
+				daoUsuarios.setConn(conn);
+				if(preferencia.getIdClient()== idUsuario){
+					daoPreferencias.deletePreferenciaCliente(preferencia);
+					conn.commit();
+				}else{
+					throw new Exception ("usuario no le pertenece preferencia");
+				}
+				
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPreferencias.cerrarRecursos();
+					daoUsuarios.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
 		}
 
 

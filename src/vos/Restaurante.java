@@ -61,8 +61,6 @@ public class Restaurante {
 		this.paginaWeb = paginaWeb;
 	}
 
-
-	
 	public Restaurante(@JsonProperty(value="id")long aId, @JsonProperty(value="nombre")String aNombre, @JsonProperty(value="descripcion")String aDescripcion,
 			@JsonProperty(value="tipoComida")String aTipoComida, @JsonProperty(value="paginaWeb")String aPaginaWeb,@JsonProperty(value="zona")long aIdZona ){
 		super();
