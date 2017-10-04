@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.DAOTablaIngredientes;
+import dao.DAOTablaIngresos;
 import dao.DAOTablaMenus;
 import dao.DAOTablaPedidos;
 import dao.DAOTablaPreferenciaClientes;
@@ -487,6 +488,41 @@ public class RotondAndesTM {
 				}
 			}
 			
+			
+		}
+
+		public void aceptarPedido(long idRestaurante, long timestamp) throws Exception {
+			DAOTablaPedidos daoPedido = new DAOTablaPedidos();
+			DAOTablaIngresos daoIngreso = new DAOTablaIngresos();
+
+			try 
+			{
+				this.conn = darConexion();
+				daoPedido.setConn(conn);
+				daoIngreso.setConn(conn);
+				daoPedido.aceptarPedido(daoPedido.buscarPedidoPorTimestamp(timestamp));
+				daoIngreso.addIngreso(daoPedido.buscarPedidoPorTimestamp(timestamp).getPrecio(), idRestaurante);
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPedido.cerrarRecursos();
+					daoIngreso.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
 			
 		}
 
