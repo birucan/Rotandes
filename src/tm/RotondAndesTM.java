@@ -26,12 +26,14 @@ import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
 import dao.DAOTablaRotonda;
 import dao.DAOTablaUsuarios;
+import dao.DAOTablaZonas;
 import vos.Ingrediente;
 import vos.Menu;
 import vos.Producto;
 import vos.Restaurante;
 import vos.Rotonda;
 import vos.Usuario;
+import vos.Zona;
 
 /**
  * Transaction Manager de la aplicacion (TM)
@@ -315,6 +317,44 @@ public class RotondAndesTM {
 			} finally {
 				try {
 					daoMenus.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+		}
+
+		public void registrarZona(int idUsuario, Zona zona) throws Exception {
+			DAOTablaZonas daoZonas = new DAOTablaZonas();
+			try 
+			{
+				Usuario foo;
+				//DAOTablaUsuarios fee = new DAOTablaUsuarios();
+//				foo = fee.buscarUsuarioPorId((long)idUsuario);
+//				if(!foo.getTipoUsuario().contains("admin")){
+//					return;
+//				}
+				//TODO THIS SHIT
+				this.conn = darConexion();
+				daoZonas.setConn(conn);
+				daoZonas.addZona(zona);
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoZonas.cerrarRecursos();
 					if(this.conn!=null)
 						this.conn.close();
 				} catch (SQLException exception) {

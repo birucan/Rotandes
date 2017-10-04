@@ -71,7 +71,8 @@ public class DAOTablaRestaurantes {
 			String a = rs.getString("DESCRIPCION");
 			String b = rs.getString("TIPOCOMIDA");
 			String c = rs.getString("PAGINAWEB");
-			Restaurantes.add(new Restaurante(id, name, a, b, c));
+			Long idz = rs.getLong("ZONA");
+			Restaurantes.add(new Restaurante(id, name, a, b, c, idz));
 		}
 		return Restaurantes;
 	}
@@ -99,7 +100,8 @@ public class DAOTablaRestaurantes {
 			String a = rs.getString("DESCRIPCION");
 			String b = rs.getString("TIPOCOMIDA");
 			String c = rs.getString("PAGINAWEB");
-			Restaurantes.add(new Restaurante(id, name, a, b, c));
+			Long idz = rs.getLong("ZONA");
+			Restaurantes.add(new Restaurante(id, name, a, b, c, idz));
 		}
 
 		return Restaurantes;
@@ -128,7 +130,8 @@ public class DAOTablaRestaurantes {
 			String a = rs.getString("DESCRIPCION");
 			String b = rs.getString("TIPOCOMIDA");
 			String c = rs.getString("PAGINAWEB");
-			Restaurante = new Restaurante(id2, name, a, b, c);
+			Long idz = rs.getLong("ZONA");
+			Restaurante = new Restaurante(id2, name, a, b, c, idz);
 		}
 
 		return Restaurante;

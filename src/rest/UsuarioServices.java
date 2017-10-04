@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
 import vos.Usuario;
+import vos.Zona;
 
 @Path("usuarios")
 public class UsuarioServices {
@@ -52,5 +53,19 @@ public class UsuarioServices {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(idUsuario).build();
+	}
+	
+	@POST
+	@Path("{idUsuario}/zona/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registrarZona(@PathParam("idUsuario") int idUsuario, Zona zona){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.registrarZona(idUsuario, zona);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(zona).build();
 	}
 }

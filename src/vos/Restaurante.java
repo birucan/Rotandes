@@ -18,6 +18,9 @@ public class Restaurante {
 	@JsonProperty(value="paginaWeb")
 	private String paginaWeb;
 	
+	@JsonProperty(value="zona")
+	private long idZona;
+	
 	public long getId() {
 		return id;
 	}
@@ -61,13 +64,14 @@ public class Restaurante {
 
 	
 	public Restaurante(@JsonProperty(value="id")long aId, @JsonProperty(value="nombre")String aNombre, @JsonProperty(value="descripcion")String aDescripcion,
-			@JsonProperty(value="tipoComida")String aTipoComida, @JsonProperty(value="paginaWeb")String aPaginaWeb){
+			@JsonProperty(value="tipoComida")String aTipoComida, @JsonProperty(value="paginaWeb")String aPaginaWeb,@JsonProperty(value="zona")long aIdZona ){
 		super();
 		this.id=aId;
 		this.nombre=aNombre;
 		this.descripcion=aDescripcion;
 		this.tipoComida= aTipoComida;
 		this.paginaWeb = aPaginaWeb;
+		this.idZona = aIdZona;
 	}  
 	
 }
