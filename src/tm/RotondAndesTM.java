@@ -22,18 +22,18 @@ import java.util.Properties;
 
 import dao.DAOTablaIngredientes;
 import dao.DAOTablaMenus;
+import dao.DAOTablaPedidos;
 import dao.DAOTablaPreferenciaClientes;
 import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
-import dao.DAOTablaRotonda;
 import dao.DAOTablaUsuarios;
 import dao.DAOTablaZonas;
 import vos.Ingrediente;
 import vos.Menu;
+import vos.Pedido;
 import vos.PreferenciaCliente;
 import vos.Producto;
 import vos.Restaurante;
-import vos.Rotonda;
 import vos.Usuario;
 import vos.Zona;
 
@@ -439,17 +439,57 @@ public class RotondAndesTM {
 			}
 		}
 
+		public void registrarPedido(int idUsuario, Pedido pedido) throws Exception {
+			pedido.setTimestamp(System.currentTimeMillis());
+			pedido.setIdCliente(idUsuario);
+			long tempPrecio=0;
+			DAOTablaProductos daoproducto = new DAOTablaProductos();
+			DAOTablaPedidos daoPedido = new DAOTablaPedidos();
+			DAOTablaMenus daoMenu = new DAOTablaMenus();
+			try 
+			{
+				
+				this.conn = darConexion();
+				daoPedido.setConn(conn);
+				daoproducto.setConn(conn);
+				daoMenu.setConn(conn);
+				if(daoproducto.buscarProductoPorId(pedido.getIdProducto())!=null){
+					Producto producto = daoproducto.buscarProductoPorId((long)pedido.getIdProducto());
+					tempPrecio+=producto.getPrecio();
+				}
+				if(daoMenu.buscarMenuPorId(pedido.getIdMenu())!=null){
+					Menu menu = daoMenu.buscarMenuPorId((long) pedido.getIdMenu());
+					tempPrecio+=menu.getPrecio();
+				}
+				pedido.setPrecio(tempPrecio);
+				daoPedido.addPedido(pedido);
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPedido.cerrarRecursos();
+					daoproducto.cerrarRecursos();
+					daoMenu.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+		}
 
 
-	////////////////////////////////////////
-	///////Transacciones////////////////////
-	////////////////////////////////////////
-
-
-	/**
-	 * Metodo que modela la transaccion que retorna todos los rotondas de la base de datos.
-	 * @return Listarotondas - objeto que modela  un arreglo de rotondas. este arreglo contiene el resultado de la busqueda
-	 * @throws Exception -  cualquier error que se genere durante la transaccion
-	 */
 
 }

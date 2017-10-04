@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 
 import tm.RotondAndesTM;
+import vos.Pedido;
 import vos.PreferenciaCliente;
 import vos.Usuario;
 import vos.Zona;
@@ -98,4 +99,18 @@ public class UsuarioServices {
 		}
 		return Response.status(200).entity(preferencia).build();
 	}
+	@POST
+	@Path("{idUsuario}/pedido/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registrarPedido(@PathParam("idUsuario") int idUsuario, Pedido pedido){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.registrarPedido(idUsuario, pedido);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
+	}
+	
 }

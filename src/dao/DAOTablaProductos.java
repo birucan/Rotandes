@@ -91,7 +91,7 @@ public class DAOTablaProductos {
 	public ArrayList<Producto> buscarProductosPorName(String name) throws SQLException, Exception {
 		ArrayList<Producto> Productos = new ArrayList<Producto>();
 
-		String sql = "SELECT * FROM Producto WHERE NAME ='" + name + "'";
+		String sql = "SELECT * FROM Producto WHERE NOMBRE ='" + name + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
