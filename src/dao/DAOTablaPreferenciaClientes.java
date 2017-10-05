@@ -110,25 +110,25 @@ public class DAOTablaPreferenciaClientes {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-//	public PreferenciaCliente buscarPreferenciaClientePorId(Long id) throws SQLException, Exception 
-//	{
-//		PreferenciaCliente PreferenciaCliente = null;
-//
-//		String sql = "SELECT * FROM PreferenciaCliente WHERE ID =" + id;
-//
-//		PreparedStatement prepStmt = conn.prepareStatement(sql);
-//		recursos.add(prepStmt);
-//		ResultSet rs = prepStmt.executeQuery();
-//
-//		if(rs.next()) {
-//			Long id2 = rs.getLong("ID");
-//			String a = rs.getString("DESCRIPCION");
-//
-//			PreferenciaCliente = new PreferenciaCliente(id2, a);
-//		}
-//
-//		return PreferenciaCliente;
-//	}
+	public PreferenciaCliente buscarPreferenciaClientePorId(Long id) throws SQLException, Exception 
+	{
+		PreferenciaCliente PreferenciaCliente = null;
+
+		String sql = "SELECT * FROM PreferenciaCliente WHERE IDCLIENTE =" + id;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) {
+			Long id2 = rs.getLong("IDCLIENTE");
+			String a = rs.getString("DESCRIPCION");
+
+			PreferenciaCliente = new PreferenciaCliente(a, id2);
+		}
+
+		return PreferenciaCliente;
+	}
 
 	/**
 	 * Metodo que agrega el PreferenciaCliente que entra como parametro a la base de datos.

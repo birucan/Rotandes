@@ -92,4 +92,10 @@ public class Producto {
 	public void setPrecio(long precio) {
 		this.precio = precio;
 	}
+
+	@Override
+	public String toString() {
+		return "Producto [id=" + id + ", nombre=" + nombre + ", descripcionES=" + descripcionES + ", descripcionEN="
+				+ descripcionEN + ", tipo=" + tipo + ", idRest=" + idRest + ", precio=" + precio + "]";
+	}
 }

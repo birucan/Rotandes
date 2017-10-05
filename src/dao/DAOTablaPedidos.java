@@ -205,6 +205,36 @@
 			//TODO add registro de precio al restaurante nojoda
 		}
 
+		public String darPedidosUser(long idUsuario) throws Exception {
+			Pedido foo= null;
+			boolean aceptado;
+			String returner="";
+
+			String sql = "SELECT * FROM Pedido WHERE IDCLIENTE ="+idUsuario;
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			
+			while (rs.next()) {
+				Long timestamp = rs.getLong("TIMESTAMP");
+				Long idCliente = rs.getLong("IDCLIENTE");
+				Long idRestaurante = rs.getLong("IDRESTAURANTE");
+				Long idProducto = rs.getLong("IDPRODUCTO");
+				Long idMenu = rs.getLong("IDMENU");
+				Long Laceptado =rs.getLong("ACEPTADO");
+				if(Laceptado==1){
+					aceptado = true;
+				}else{
+					aceptado = false;
+				}
+				Long precio = rs.getLong("PRECIO");		
+				foo = new Pedido(timestamp, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio);
+				returner += foo.toString();
+			}
+			return returner;
+		}
+
 //		/**
 //		 * Metodo que elimina el Pedido que entra como parametro en la base de datos.
 //		 * @param Pedido - el Pedido a borrar. Pedido !=  null

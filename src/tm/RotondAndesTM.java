@@ -30,6 +30,7 @@ import dao.DAOTablaRestaurantes;
 import dao.DAOTablaUsuarios;
 import dao.DAOTablaZonas;
 import vos.Ingrediente;
+import vos.Ingreso;
 import vos.Menu;
 import vos.Pedido;
 import vos.PreferenciaCliente;
@@ -523,6 +524,176 @@ public class RotondAndesTM {
 					throw exception;
 				}
 			}
+			
+		}
+
+		public List<Zona> consultarZonas(String order) throws Exception {
+			DAOTablaZonas daoZona = new DAOTablaZonas();
+			List<Zona> foo = null;
+			this.conn = darConexion();
+			daoZona.setConn(conn);
+			try {
+				if(order.equals("ID")||order.equals("DESCRIPCION")){
+				
+					foo=daoZona.darZonaO(order);
+				
+				}else{
+					foo=daoZona.darZonas();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				try {
+					daoZona.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return foo;
+		}
+
+		public String darTodoUsuario(long idUsuario) throws Exception {
+			DAOTablaUsuarios daoUsuarios = new DAOTablaUsuarios();
+			DAOTablaPreferenciaClientes daoPreferencia = new DAOTablaPreferenciaClientes();
+			DAOTablaPedidos daoPedidos = new DAOTablaPedidos();
+			String foo = "";
+			
+			this.conn = darConexion();
+			daoUsuarios.setConn(conn);
+			daoPreferencia.setConn(conn);
+			daoPedidos.setConn(conn);
+			
+			try {
+				foo += daoUsuarios.buscarUsuarioPorId(idUsuario).toString();
+				foo += daoPreferencia.buscarPreferenciaClientePorId(idUsuario).toString();
+				foo += daoPedidos.darPedidosUser(idUsuario).toString();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				try {
+					daoUsuarios.cerrarRecursos();
+					daoPreferencia.cerrarRecursos();
+					daoPedidos.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return foo;
+		}
+
+		public String darProductoMas() throws SQLException  {
+			DAOTablaMenus daoMenu = new DAOTablaMenus();
+			DAOTablaProductos daoProd = new DAOTablaProductos();
+			Producto mejor= null;
+			
+			
+			try {
+				this.conn = darConexion();
+				daoMenu.setConn(conn);
+				daoProd.setConn(conn);
+				
+				
+				List<Menu> foo =daoMenu.darMenus();
+				int mas[]=new int[daoProd.darProductos().size()];
+				long actual=0;
+				
+				for(int a=0;a<foo.size();a++){
+					for(int b=0;b<daoProd.darProductos().size();b++){
+						actual =b;
+					if(actual==foo.get(a).getAcom()||actual==foo.get(a).getBebida()||actual==foo.get(a).getEntrada()||actual==foo.get(a).getFuerte()||actual==foo.get(a).getPostre()){
+						mas[b]++;
+					}
+					}
+				}
+				
+				int max=0;
+				for (int counter = 1; counter < mas.length; counter++)
+				{
+				     if (mas[counter] > max)
+				     {
+				      max = mas[counter];
+				      mejor =daoProd.buscarProductoPorId((long)counter);
+				     }
+				}
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				try {
+					daoMenu.cerrarRecursos();
+					daoProd.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return mejor.toString();
+			
+		}
+
+		public String darRentabilidad(long idRestaurante, long timestampI, long timestampF) throws Exception {
+			DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
+			DAOTablaPedidos daoPed = new DAOTablaPedidos();
+			DAOTablaIngresos daoIng = new DAOTablaIngresos();
+			String response = "";
+			
+			
+			try {
+				this.conn = darConexion();
+				daoRest.setConn(conn);
+				daoPed.setConn(conn);
+				daoIng.setConn(conn);
+				
+				response += daoRest.buscarRestaurantePorId(idRestaurante);
+				
+				List<Pedido> pedialite = daoPed.darPedidos();
+				
+				for(int a=0; a<pedialite.size();a++){
+					if(pedialite.get(a).getTimestamp()> timestampI && pedialite.get(a).getTimestamp()> timestampF && pedialite.get(a).getIdRestaurante() == idRestaurante){
+						response += pedialite.get(a).toString();
+					}
+				}
+				List<Ingreso> pedialite2 = daoIng.darIngresos();
+				
+				for(int a=0; a<pedialite2.size();a++){
+					if(pedialite2.get(a).getIdRestaurante() == idRestaurante){
+						response += pedialite.get(a).toString();
+					}
+				}
+				
+				
+			}  catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				try {
+					daoRest.cerrarRecursos();
+					daoPed.cerrarRecursos();
+					daoIng.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return response;
+			
 			
 		}
 

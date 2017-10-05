@@ -74,7 +74,7 @@ public class DAOTablaMenus {
 			Long ide = rs.getLong("IDENTRADA");
 			Long idf = rs.getLong("IDFUERTE");
 			Long idp = rs.getLong("IDPOSTRE");
-			Long idb = rs.getLong("IDBEBEIDA");
+			Long idb = rs.getLong("IDBEBIDA");
 			Long ida = rs.getLong("IDACOM");
 			Long p = rs.getLong("PRECIO");
 			

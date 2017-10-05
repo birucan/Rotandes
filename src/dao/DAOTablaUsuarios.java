@@ -89,14 +89,14 @@ public class DAOTablaUsuarios {
 	public ArrayList<Usuario> buscarUsuariosPorName(String name) throws SQLException, Exception {
 		ArrayList<Usuario> Usuarios = new ArrayList<Usuario>();
 
-		String sql = "SELECT * FROM Usuario WHERE NAME ='" + name + "'";
+		String sql = "SELECT * FROM Usuario WHERE NOMBRE ='" + name + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String name2 = rs.getString("NAME");
+			String name2 = rs.getString("NOMBRE");
 			Long id = rs.getLong("ID");
 			String a = rs.getString("IDENTIFICACION");
 			String b = rs.getString("CORREO");
@@ -118,14 +118,14 @@ public class DAOTablaUsuarios {
 	{
 		Usuario Usuario = null;
 
-		String sql = "SELECT * FROM Usuario WHERE ID =" + id;
+		String sql = "SELECT * FROM Usuario WHERE ID = " + id;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			String name = rs.getString("NAME");
+			String name = rs.getString("NOMBRE");
 			Long id2 = rs.getLong("ID");
 			String a = rs.getString("IDENTIFICACION");
 			String b = rs.getString("CORREO");
@@ -173,7 +173,7 @@ public class DAOTablaUsuarios {
 	public void updateUsuario(Usuario Usuario) throws SQLException, Exception {
 
 		String sql = "UPDATE Usuario SET ";
-		sql += "NAME='" + Usuario.getNombre() + "',";
+		sql += "NOMBRE='" + Usuario.getNombre() + "',";
 		sql += " WHERE ID = " + Usuario.getId();
 
 

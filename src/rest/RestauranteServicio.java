@@ -2,6 +2,7 @@ package rest;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -99,5 +100,19 @@ public class RestauranteServicio {
 
 	}
 	
+	@GET
+	@Path("/{idRestaurante}/Rentabilidad/{timestampI}/{timestampF}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response darRentabilidad(@PathParam("idRestaurante")long idRestaurante,@PathParam("timestampI")long timestampI, @PathParam("timestampF")long timestampF){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		String response = "";
+		try {
+			tm.darRentabilidad(idRestaurante, timestampI, timestampF);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(response).build();
+	}
 	
 }

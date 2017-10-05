@@ -90,5 +90,12 @@ public void setPrecio(long precio) {
 	this.precio = precio;
 }
 
+@Override
+public String toString() {
+	return "Pedido [timestamp=" + timestamp + ", idCliente=" + idCliente + ", idRestaurante=" + idRestaurante
+			+ ", idProducto=" + idProducto + ", idMenu=" + idMenu + ", aceptado=" + aceptado + ", precio=" + precio
+			+ "]";
+}
+
 
 }

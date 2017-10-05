@@ -61,7 +61,7 @@ public class DAOTablaZonas {
 	public ArrayList<Zona> darZonas() throws SQLException, Exception {
 		ArrayList<Zona> Zonas = new ArrayList<Zona>();
 
-		String sql = "SELECT * FROM Zona";
+		String sql = "SELECT * FROM ZONA";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -74,6 +74,25 @@ public class DAOTablaZonas {
 			Zonas.add(new Zona(id, a));
 		}
 		return Zonas;
+	}
+	
+	public ArrayList<Zona> darZonaO(String order) throws Exception{
+
+			ArrayList<Zona> Zonas = new ArrayList<Zona>();
+
+			String sql = "SELECT * FROM Zona ORDER BY "+ order;
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				Long id = rs.getLong("ID");
+				String a = rs.getString("DESCRIPCION");
+
+				Zonas.add(new Zona(id, a));
+			}
+			return Zonas;
 	}
 
 
@@ -129,6 +148,7 @@ public class DAOTablaZonas {
 
 		return Zona;
 	}
+	
 
 	/**
 	 * Metodo que agrega el Zona que entra como parametro a la base de datos.

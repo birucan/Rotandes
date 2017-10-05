@@ -30,6 +30,11 @@ public class PreferenciaCliente {
 	public void setIdClient(long idClient) {
 		this.idClient = idClient;
 	}
+
+	@Override
+	public String toString() {
+		return "PreferenciaCliente [descripcion=" + descripcion + ", idClient=" + idClient + "]";
+	}
 	
 	
 }
