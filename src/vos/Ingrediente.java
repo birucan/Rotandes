@@ -13,13 +13,22 @@ public class Ingrediente {
 	
 	@JsonProperty(value="idProd")
 	private long idProd;
-
-	public Ingrediente(@JsonProperty(value="nombre")String nombre, @JsonProperty(value="descripcionES")String descripcionES,@JsonProperty(value="descripcionEN") String descripcionEN, @JsonProperty(value="idProd")long idProd) {
+	
+	@JsonProperty(value="costo")
+	private long costo;
+	 
+	@JsonProperty(value="equivalencia")
+	private String equivalencia;
+	
+	public Ingrediente(@JsonProperty(value="nombre")String nombre, @JsonProperty(value="descripcionES")String descripcionES,@JsonProperty(value="descripcionEN") String descripcionEN, @JsonProperty(value="idProd")long idProd, @JsonProperty(value="costo") long costo,@JsonProperty(value="equivalencia")
+	String equivalencia) {
 		super();
 		this.nombre = nombre;
 		this.descripcionES = descripcionES;
 		this.descripcionEN = descripcionEN;
 		this.idProd = idProd;
+		this.costo= costo;
+		this.equivalencia = equivalencia;
 	}
 
 	public String getNombre() {
@@ -53,4 +62,19 @@ public class Ingrediente {
 	public void setIdProd(long idProd) {
 		this.idProd = idProd;
 	}
+	public void setEquivalencia(String foo) {
+		this.equivalencia = foo;
+	}
+	public String getEquivalencia() {
+		return equivalencia;
+	}
+
+	public long getCosto() {
+		return costo;
+	}
+
+	public void setCosto(long costo) {
+		this.costo = costo;
+	}
+
 }

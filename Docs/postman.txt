@@ -1,0 +1,41 @@
+RQ1 yRQ2
+url : http://localhost:8080/RotondAndes/rest/usuarios/
+
+RQ3
+url : http://localhost:8080/RotondAndes/rest/restaurantes/
+
+RQ4
+url:  http://localhost:8080/RotondAndes/rest/restaurantes/{idRestaurante}/producto/
+
+RQ5
+url: http://localhost:8080/RotondAndes/rest/restaurantes/{idRestaurante}/producto/{idProducto}/ingrediente/
+
+RQ6
+url: http://localhost:8080/RotondAndes/rest/restaurantes/{idRestaurante}/menu
+
+RQ7
+url: http://localhost:8080/RotondAndes/rest/usuarios/{idUsuario}/zona/
+
+RQ8
+url:http://localhost:8080/RotondAndes/rest/usuarios/{idUsuario}/preferencia/ (post & delete)
+
+RQ9
+url:http://localhost:8080/RotondAndes/rest/usuarios/{idUsuario}/pedido/
+RQ10
+http://localhost:8080/RotondAndes/rest/restaurantes/{idRestaurante}/pedidos/{timestamp} (acepta el pedido y registra)
+
+RQC2
+http://localhost:8080/RotondAndes/rest/usuarios/{idUsuario}/zona/{orderBy}
+
+RQC3
+http://localhost:8080/RotondAndes/rest/usuarios/{idUsuario}/info
+
+
+RQC4
+http://localhost:8080/RotondAndes/rest/usuarios/productosMas/
+
+RQC5
+http://localhost:8080/RotondAndes/rest/restaurantes/{idRestaurante}/Rentabilidad/{timestampI}/{timestampF}
+
+RQC6
+http://localhost:8080/RotondAndes/rest/usuarios/productosMasDate/{time1}/{time2}

@@ -71,7 +71,9 @@ public class DAOTablaIngredientes {
 			String a = rs.getString("DESCRIPCIONES");
 			String b = rs.getString("DESCRIPCIONEN");
 			Long c = rs.getLong("IDPROD");
-			Ingredientes.add(new Ingrediente(name, a, b, c));
+			Long d = rs.getLong("COSTO");
+			String e = rs.getString("EQUIVALENCIA");
+			Ingredientes.add(new Ingrediente(name, a, b, c, d, e));
 		}
 		return Ingredientes;
 	}
@@ -98,7 +100,9 @@ public class DAOTablaIngredientes {
 			String a = rs.getString("DESCRIPCIONES");
 			String b = rs.getString("DESCRIPCIONEN");
 			Long c = rs.getLong("IDPROD");
-			Ingredientes.add(new Ingrediente(name, a, b, c));
+			Long d = rs.getLong("COSTO");
+			String e = rs.getString("EQUIVALENCIA");
+			Ingredientes.add(new Ingrediente(name2, a, b, c, d, e));
 		}
 
 		return Ingredientes;
@@ -144,11 +148,13 @@ public class DAOTablaIngredientes {
 	public void addIngrediente(Ingrediente Ingrediente) throws SQLException, Exception {
 
 
-		 String sql = "INSERT INTO Ingrediente (nombre, descripcionES, descripcionEN, idProd) VALUES ('";
+		 String sql = "INSERT INTO Ingrediente VALUES ('";
 		  sql += Ingrediente.getNombre() + "', '";
 		  sql += Ingrediente.getDescripcionES() +"', '";
 		  sql += Ingrediente.getDescripcionEN()+"', ";
-		  sql += Ingrediente.getIdProd()+") ";
+		  sql += Ingrediente.getIdProd()+", ";
+		  sql += Ingrediente.getCosto()+",'";
+		  sql += Ingrediente.getEquivalencia()+"')";
 		
 
 

@@ -23,10 +23,11 @@ public class Producto {
 	@JsonProperty(value="precio")
 	private long precio;
 
-
+	@JsonProperty(value="equivalencia")
+	private long equivalencia;
 
 	public Producto(@JsonProperty(value="id")long id, @JsonProperty(value="nombre")String nombre, @JsonProperty(value="descripcionES")String descripcionES, @JsonProperty(value="descripcionEN")String descripcionEN, @JsonProperty(value="tipo")String tipo, @JsonProperty(value="idRest")long idRest,@JsonProperty(value="precio")
-	 long aprecio) {
+	 long aprecio, @JsonProperty(value="equivalencia") long equivalencia) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -35,6 +36,7 @@ public class Producto {
 		this.tipo = tipo;
 		this.idRest = idRest;
 		this.precio = aprecio;
+		this.equivalencia= equivalencia;
 		
 	}
 
@@ -91,6 +93,15 @@ public class Producto {
 
 	public void setPrecio(long precio) {
 		this.precio = precio;
+	}
+	
+
+	public long getEquivalencia() {
+		return equivalencia;
+	}
+
+	public void setEquivalencia(long equivalencia) {
+		this.equivalencia = equivalencia;
 	}
 
 	@Override

@@ -1,0 +1,1 @@
+Se corre el proyecto con WildFly8.2, y se deja corriendo, se corren los comandos respectivos en postman y estos en si van conectados la DB anexada a mi usuario que esta en connexion.properties

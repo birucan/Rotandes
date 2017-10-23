@@ -75,7 +75,8 @@ public class DAOTablaProductos {
 			String c = rs.getString("TIPO");
 			Long d = rs.getLong("IDREST");
 			Long e = rs.getLong("PRECIO");
-			Productos.add(new Producto(id, name, a, b, c, d, e));
+			Long f = rs.getLong("EQUIVALENCIA");
+			Productos.add(new Producto(id, name, a, b, c, d, e, f));
 		}
 		return Productos;
 	}
@@ -105,7 +106,8 @@ public class DAOTablaProductos {
 			String c = rs.getString("TIPO");
 			Long d = rs.getLong("IDREST");
 			Long e = rs.getLong("PRECIO");
-			Productos.add(new Producto(id, name, a, b, c, d, e));
+			Long f = rs.getLong("EQUIVALENCIA");
+			Productos.add(new Producto(id, name, a, b, c, d, e, f));
 		}
 
 		return Productos;
@@ -136,7 +138,8 @@ public class DAOTablaProductos {
 			String c = rs.getString("TIPO");
 			Long d = rs.getLong("IDREST");
 			Long e = rs.getLong("PRECIO");
-			Producto = new Producto(id2, name, a, b, c, d, e);
+			Long f = rs.getLong("EQUIVALENCIA");
+			Producto = new Producto(id2, name, a, b, c, d, e, f);
 		}
 
 		return Producto;
@@ -153,14 +156,15 @@ public class DAOTablaProductos {
 	public void addProducto(Producto Producto) throws SQLException, Exception {
 
 
-		 String sql = "INSERT INTO Producto (id, nombre, descripcionES, descripcionEN, tipo, idRest, precio) VALUES (";
+		 String sql = "INSERT INTO Producto VALUES (";
 		  sql += Producto.getId() + ", '";
 		  sql += Producto.getNombre() +"', '";
 		  sql += Producto.getDescripcionES()+"', '";
 		  sql += Producto.getDescripcionEN()+"', '";
 		  sql += Producto.getTipo()+"',";
 		  sql += Producto.getIdRest()+",";
-		  sql += Producto.getPrecio()+")";
+		  sql += Producto.getPrecio()+",";
+		  sql += Producto.getEquivalencia()+")";
 		
 
 
