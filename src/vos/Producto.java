@@ -25,9 +25,15 @@ public class Producto {
 
 	@JsonProperty(value="equivalencia")
 	private long equivalencia;
+	
+	@JsonProperty(value="cantidad")
+	private long cantidad;
+	
+	@JsonProperty(value= "maximo")
+	private long maximo;
 
 	public Producto(@JsonProperty(value="id")long id, @JsonProperty(value="nombre")String nombre, @JsonProperty(value="descripcionES")String descripcionES, @JsonProperty(value="descripcionEN")String descripcionEN, @JsonProperty(value="tipo")String tipo, @JsonProperty(value="idRest")long idRest,@JsonProperty(value="precio")
-	 long aprecio, @JsonProperty(value="equivalencia") long equivalencia) {
+	 long aprecio, @JsonProperty(value="equivalencia") long equivalencia, @JsonProperty(value="cantidad") long cantidad, @JsonProperty(value="maximo") long maximo) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -37,6 +43,8 @@ public class Producto {
 		this.idRest = idRest;
 		this.precio = aprecio;
 		this.equivalencia= equivalencia;
+		this.cantidad = cantidad;
+		this.maximo = maximo;
 		
 	}
 
@@ -102,6 +110,23 @@ public class Producto {
 
 	public void setEquivalencia(long equivalencia) {
 		this.equivalencia = equivalencia;
+	}
+	
+	
+	public long getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(long cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public long getMaximo() {
+		return maximo;
+	}
+
+	public void setMaximo(long maximo) {
+		this.maximo = maximo;
 	}
 
 	@Override

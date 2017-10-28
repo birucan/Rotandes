@@ -76,7 +76,9 @@ public class DAOTablaProductos {
 			Long d = rs.getLong("IDREST");
 			Long e = rs.getLong("PRECIO");
 			Long f = rs.getLong("EQUIVALENCIA");
-			Productos.add(new Producto(id, name, a, b, c, d, e, f));
+			Long g = rs.getLong("CANTIDAD");
+			Long h = rs.getLong("MAXIMO");
+			Productos.add(new Producto(id, name, a, b, c, d, e, f, g, h));
 		}
 		return Productos;
 	}
@@ -107,7 +109,9 @@ public class DAOTablaProductos {
 			Long d = rs.getLong("IDREST");
 			Long e = rs.getLong("PRECIO");
 			Long f = rs.getLong("EQUIVALENCIA");
-			Productos.add(new Producto(id, name, a, b, c, d, e, f));
+			Long g = rs.getLong("CANTIDAD");
+			Long h = rs.getLong("MAXIMO");
+			Productos.add(new Producto(id, name, a, b, c, d, e, f, g, h));
 		}
 
 		return Productos;
@@ -139,7 +143,9 @@ public class DAOTablaProductos {
 			Long d = rs.getLong("IDREST");
 			Long e = rs.getLong("PRECIO");
 			Long f = rs.getLong("EQUIVALENCIA");
-			Producto = new Producto(id2, name, a, b, c, d, e, f);
+			Long g = rs.getLong("CANTIDAD");
+			Long h = rs.getLong("MAXIMO");
+			Producto = new Producto(id2, name, a, b, c, d, e, f, g, h);
 		}
 
 		return Producto;
@@ -210,6 +216,18 @@ public class DAOTablaProductos {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+
+
+	public void updateEquivalencia(int idProducto, long equivalencia) throws SQLException {
+		String sql = "UPDATE PRODUCTO SET ";
+		sql += "EQUIVALENCIA = " + equivalencia;
+		sql += " WHERE ID = " + idProducto;
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
 	}
 
 
