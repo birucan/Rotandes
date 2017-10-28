@@ -115,4 +115,19 @@ public class RestauranteServicio {
 		return Response.status(200).entity(response).build();
 	}
 	
+	@PUT
+	@Path("{idRestaurante}/producto/{idProducto}/ingrediente/{nombreIngrediente}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateEquivalenciaI(@PathParam("idRestaurante") int idRestaurante,@PathParam("idProducto")int idProducto, @PathParam("nombreIngrediente") String nombreI, Ingrediente ingrediente) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		String response = "";
+		try {
+			tm.updateEquivalenciaI(idRestaurante, idProducto, nombreI, ingrediente);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(response).build();		
+	}
+	
 }

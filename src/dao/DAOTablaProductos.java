@@ -28,7 +28,7 @@ public class DAOTablaProductos {
 	 */
 	public DAOTablaProductos() {
 		recursos = new ArrayList<Object>();
-	}
+	} 
 
 	/**
 	 * Metodo que cierra todos los recursos que estan enel arreglo de recursos

@@ -697,6 +697,37 @@ public class RotondAndesTM {
 			
 		}
 
+		public void updateEquivalenciaI(int idRestaurante, int idProducto, String nombreI, Ingrediente ingrediente) throws SQLException {
+			DAOTablaIngredientes daoIngrediente = new DAOTablaIngredientes();
+
+			try 
+			{
+				this.conn = darConexion();
+				daoIngrediente.setConn(conn);
+				daoIngrediente.updateEquivalencia(nombreI, ingrediente.getEquivalencia());
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoIngrediente.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+		}
+
 
 
 }

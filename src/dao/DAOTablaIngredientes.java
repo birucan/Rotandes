@@ -163,6 +163,11 @@ public class DAOTablaIngredientes {
 		prepStmt.executeQuery();
 
 	}
+	public void updateEquivalencia(String nombre, String equivalente) {
+		String sql = "UPDATE INGREDIENTE SET ";
+		sql += "EQUIVALENCIA = " + equivalente;
+		sql += " WHERE NOMBRE = '"+nombre+"'";
+	}
 	
 
 }
