@@ -230,5 +230,17 @@ public class DAOTablaProductos {
 		
 	}
 
+	public void surtir(int idRestaurante) throws SQLException {
+		String sql = "UPDATE PRODUCTO SET ";
+		sql += "CANTIDAD = " + "MAXIMO";
+		sql += " WHERE IDREST = " + idRestaurante;
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+		
+	}
+
 
 }
