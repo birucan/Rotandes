@@ -194,4 +194,23 @@ public class UsuarioServices {
 		}
 		return Response.status(200).entity(pedido).build();
 }
+	@POST
+	@Path("pedirPorMesa/{idMesa}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registrarPedidoMesa(List<Pedido> pedidos,@PathParam("idMesa") int idMesa){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		
+	
+		try {
+			for(int a =0; a<pedidos.size();a++) {
+				pedidos.get(a).setIdMesa(idMesa);
+				tm.registrarPedido((int)pedidos.get(a).getIdCliente(), pedidos.get(a));
+			}
+			
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedidos).build();
+}
 }

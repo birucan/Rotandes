@@ -81,8 +81,9 @@
 				}else{
 					aceptado = false;
 				}
-				Long precio = rs.getLong("PRECIO");		
-				Pedidos.add(new Pedido(timestamp, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio));
+				Long precio = rs.getLong("PRECIO");	
+				Long idMesa = rs.getLong("IDMESA");
+				Pedidos.add(new Pedido(timestamp, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio, idMesa));
 			}
 			return Pedidos;
 		}
@@ -147,7 +148,8 @@
 					aceptado = false;
 				}
 				Long precio = rs.getLong("PRECIO");		
-				Pedido = new Pedido(timestamp2, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio);
+				long idMesa = rs.getLong("IDMESA");
+				Pedido = new Pedido(timestamp2, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio, idMesa);
 			}
 				return Pedido;
 			}
@@ -174,7 +176,8 @@
 			  sql += Pedido.getIdMenu()+", ";
 			  //oracle no tiene tipo boolean y por default es false
 			  sql += "0,";
-			  sql += Pedido.getPrecio()+")";
+			  sql += Pedido.getPrecio()+", ";
+			  sql += Pedido.getIdMesa()+")";
 			
 
 
@@ -229,7 +232,8 @@
 					aceptado = false;
 				}
 				Long precio = rs.getLong("PRECIO");		
-				foo = new Pedido(timestamp, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio);
+				Long idMesa = rs.getLong("IDMESA");
+				foo = new Pedido(timestamp, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio, idMesa);
 				returner += foo.toString();
 			}
 			return returner;

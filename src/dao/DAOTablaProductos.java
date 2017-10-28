@@ -160,7 +160,7 @@ public class DAOTablaProductos {
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
 	public void addProducto(Producto Producto) throws SQLException, Exception {
-
+		//TODO fix this by adding the new parameters to the sentence
 
 		 String sql = "INSERT INTO Producto VALUES (";
 		  sql += Producto.getId() + ", '";

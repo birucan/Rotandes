@@ -22,8 +22,10 @@ private boolean aceptado;
 @JsonProperty(value="precio")
 private long precio;
 
+@JsonProperty(value="idMesa")
+private long idMesa;
 public Pedido(@JsonProperty(value="timestamp")long timestamp,@JsonProperty(value="idCliente") long idCliente,@JsonProperty(value="idRestaurante") long idRestaurante,@JsonProperty(value="idProducto") long idProducto,@JsonProperty(value="idMenu") long idMenu,@JsonProperty(value="aceptado") boolean aceptado,
-		@JsonProperty(value="precio")long precio) {
+		@JsonProperty(value="precio")long precio, @JsonProperty(value="idMesa") long idMesa) {
 	super();
 	this.timestamp = timestamp;
 	this.idCliente = idCliente;
@@ -32,6 +34,7 @@ public Pedido(@JsonProperty(value="timestamp")long timestamp,@JsonProperty(value
 	this.idMenu = idMenu;
 	this.aceptado = aceptado;
 	this.precio = precio;
+	this.idMesa = idMesa;
 }
 
 public long getTimestamp() {
@@ -88,6 +91,15 @@ public long getPrecio() {
 
 public void setPrecio(long precio) {
 	this.precio = precio;
+}
+
+
+public long getIdMesa() {
+	return idMesa;
+}
+
+public void setIdMesa(long idMesa) {
+	this.idMesa = idMesa;
 }
 
 @Override
