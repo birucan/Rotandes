@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 
 import tm.RotondAndesTM;
+import vos.Menu;
 import vos.Pedido;
 import vos.PreferenciaCliente;
 import vos.Usuario;
@@ -175,4 +176,22 @@ public class UsuarioServices {
 		return Response.status(200).entity(response).build();
 	}
 	
+	@POST
+	@Path("{idUsuario}/pedido/{acom}/{beb}/{entrada}/{fuerte}/{postre}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registrarPedidoE(@PathParam("idUsuario") int idUsuario, Pedido pedido, @PathParam("acom") String acom, @PathParam("beb") String beb,@PathParam("entrada") String entrada,
+			@PathParam("fuerte") String fuerte,@PathParam("postre") String postre){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		Pedido pedidoEquivalente= pedido;
+		Menu menuEquivalente;
+		
+	
+		try {
+			tm.registrarPedidoE(idUsuario, pedido, acom, beb, entrada, fuerte, postre);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
+}
 }

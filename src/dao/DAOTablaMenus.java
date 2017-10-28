@@ -164,6 +164,10 @@ public class DAOTablaMenus {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-		
+	public void updateTemp(Menu menu) throws Exception{
+		deleteMenu(new Menu(420, 0, 0, 0, 0, 0, 0, 0));
+		menu.setId(420);
+		addMenu(menu);
+	}
 		
 }

@@ -791,6 +791,86 @@ public class RotondAndesTM {
 			
 		}
 
+		public void registrarPedidoE(int idUsuario, Pedido pedido, String acom, String beb, String entrada, String fuerte,
+				String postre) throws Exception {
+			pedido.setTimestamp(System.currentTimeMillis());
+			pedido.setIdCliente(idUsuario);
+			long tempPrecio=0;
+			DAOTablaProductos daoproducto = new DAOTablaProductos();
+			DAOTablaPedidos daoPedido = new DAOTablaPedidos();
+			DAOTablaMenus daoMenu = new DAOTablaMenus();
+			boolean tiene = false;
+			try 
+			{
+				
+				this.conn = darConexion();
+				daoPedido.setConn(conn);
+				daoproducto.setConn(conn);
+				daoMenu.setConn(conn);
+				if(daoproducto.buscarProductoPorId(pedido.getIdProducto())!=null){
+					Producto producto = daoproducto.buscarProductoPorId((long)pedido.getIdProducto());
+					tempPrecio+=producto.getPrecio();
+				}
+				if(daoMenu.buscarMenuPorId(pedido.getIdMenu())!=null){
+					Menu menu = daoMenu.buscarMenuPorId((long) pedido.getIdMenu());
+					if(acom.equals("si")) {
+						tiene = true;
+						Producto tempA=daoproducto.buscarProductoPorId(menu.getAcom());
+						menu.setAcom(tempA.getEquivalencia());
+					}if(beb.equals("si")) {
+						tiene = true;
+						Producto tempB=daoproducto.buscarProductoPorId(menu.getBebida());
+						menu.setBebida(tempB.getEquivalencia());
+					}if(entrada.equals("si")) {
+						tiene = true;
+						Producto tempC=daoproducto.buscarProductoPorId(menu.getEntrada());
+						menu.setEntrada(tempC.getEquivalencia());
+					}if(fuerte.equals("si")) {
+						tiene = true;
+						Producto tempD=daoproducto.buscarProductoPorId(menu.getFuerte());
+						menu.setFuerte(tempD.getEquivalencia());
+					}if(acom.equals("si")) {
+						tiene = true;
+						Producto tempE=daoproducto.buscarProductoPorId(menu.getAcom());
+						menu.setAcom(tempE.getEquivalencia());
+					}if(acom.equals("si")) {
+						tiene = true;
+						Producto tempF=daoproducto.buscarProductoPorId(menu.getAcom());
+						menu.setAcom(tempF.getEquivalencia());
+					}
+					daoMenu.updateTemp(menu);
+					pedido.setIdMenu(menu.getId());
+					tempPrecio+=menu.getPrecio();
+				}
+				pedido.setPrecio(tempPrecio);
+				daoPedido.addPedido(pedido);
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPedido.cerrarRecursos();
+					daoproducto.cerrarRecursos();
+					daoMenu.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+		}
+
 
 
 }
