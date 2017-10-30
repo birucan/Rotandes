@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -213,4 +214,22 @@ public class UsuarioServices {
 		}
 		return Response.status(200).entity(pedidos).build();
 }
+	@GET
+	@Path("{idUsuario}/infoPedidos/{parametro}")//parametro puede ser menu, individual, o mesa
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response infoPedidos(@PathParam("idUsuario")long idUsuario, @PathParam("parametro")String parametro) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Pedido> returner = new ArrayList();
+		
+		try {
+	
+				returner = tm.darPedidos(idUsuario, parametro);
+		
+			
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(returner).build();
+	}
 }
