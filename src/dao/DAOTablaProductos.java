@@ -241,6 +241,14 @@ public class DAOTablaProductos {
 		
 		
 	}
-
+	public void consumir(long l) throws Exception{
+		String sql = "UPDATE PRODUCTO SET ";
+		sql += "CANTIDAD = CANTIDAD - 1";
+		sql += " WHERE ID = " + l;
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
 
 }

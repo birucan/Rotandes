@@ -6,8 +6,9 @@
 	import java.sql.ResultSet;
 	import java.sql.SQLException;
 	import java.util.ArrayList;
+import java.util.List;
 
-	import vos.Pedido;
+import vos.Pedido;
 
 	public class DAOTablaPedidos {
 
@@ -70,7 +71,7 @@
 			ResultSet rs = prepStmt.executeQuery();
 
 			while (rs.next()) {
-				Long timestamp = rs.getLong("TIMESTAMP");
+				Long timestamp = rs.getLong("TIMESTAMPP");
 				Long idCliente = rs.getLong("IDCLIENTE");
 				Long idRestaurante = rs.getLong("IDRESTAURANTE");
 				Long idProducto = rs.getLong("IDPRODUCTO");
@@ -129,7 +130,7 @@
 			Pedido Pedido = null;
 			boolean aceptado;
 
-			String sql = "SELECT * FROM Pedido WHERE TIMESTAMP =" + timestamp;
+			String sql = "SELECT * FROM Pedido WHERE TIMESTAMP = " + timestamp;
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
@@ -195,11 +196,11 @@
 		 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el Pedido.
 		 * @throws Exception - Cualquier error que no corresponda a la base de datos
 		 */
-		public void aceptarPedido(Pedido Pedido) throws SQLException, Exception {
-			Pedido.setAceptado(true);
+		public void aceptarPedido(long timestamp) throws SQLException, Exception {
+			//Pedido.setAceptado(true);
 			String sql = "UPDATE Pedido SET ";
-			sql += "ACEPTADO=" + "1,";
-			sql += " WHERE TIMESTAMP = " + Pedido.getTimestamp();
+			sql += "ACEPTADO =" + " 1";
+			sql += " WHERE TIMESTAMP = " + timestamp;
 
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -207,6 +208,7 @@
 			prepStmt.executeQuery();
 			//TODO add registro de precio al restaurante nojoda
 		}
+		
 
 		public String darPedidosUser(long idUsuario) throws Exception {
 			Pedido foo= null;
@@ -238,7 +240,37 @@
 			}
 			return returner;
 		}
+		
+		public List<Pedido> darPedidosMesa(long idMesa) throws Exception {
+			Pedido foo= null;
+			boolean aceptado;
+			List<Pedido> returner = new ArrayList<Pedido>();
 
+			String sql = "SELECT * FROM Pedido WHERE IDMESA ="+idMesa;
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			
+			while (rs.next()) {
+				Long timestamp = rs.getLong("TIMESTAMP");
+				Long idCliente = rs.getLong("IDCLIENTE");
+				Long idRestaurante = rs.getLong("IDRESTAURANTE");
+				Long idProducto = rs.getLong("IDPRODUCTO");
+				Long idMenu = rs.getLong("IDMENU");
+				Long Laceptado =rs.getLong("ACEPTADO");
+				if(Laceptado==1){
+					aceptado = true;
+				}else{
+					aceptado = false;
+				}
+				Long precio = rs.getLong("PRECIO");		
+				Long idMesaa = rs.getLong("IDMESA");
+				foo = new Pedido(timestamp, idCliente, idRestaurante, idProducto, idMenu, aceptado, precio, idMesaa);
+				returner.add(foo);
+			}
+			return returner;
+		}
 //		/**
 //		 * Metodo que elimina el Pedido que entra como parametro en la base de datos.
 //		 * @param Pedido - el Pedido a borrar. Pedido !=  null
@@ -256,6 +288,17 @@
 //			recursos.add(prepStmt);
 //			prepStmt.executeQuery();
 //		}
+
+		public void eliminar(long timestamp) throws Exception {
+		
+			String sql = "DELETE FROM Pedido";
+			sql += " WHERE TIMESTAMP = " + timestamp;
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+			
+		}
 
 
 

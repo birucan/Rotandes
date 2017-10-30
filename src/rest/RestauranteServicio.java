@@ -2,6 +2,7 @@ package rest;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -86,7 +87,7 @@ public class RestauranteServicio {
 	}
 	
 	@PUT
-	@Path("{idRestaurante}/pedidos/{timestamp}")
+	@Path("/{idRestaurante}/pedidos/{timestamp}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response aceptarPedido(@PathParam("idRestaurante")long idRestaurante,@PathParam("timestamp")long timestamp, Pedido pedido){
@@ -97,6 +98,21 @@ public class RestauranteServicio {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
+
+	}
+	@PUT
+	@Path("/pedidosMesa/{mesa}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response aceptarPedidos(@PathParam("mesa")long idMesa, Pedido pedido){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		String text = "test";
+		try {
+			tm.aceptarPedidosMesa(idMesa);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(text).build();
 
 	}
 	
@@ -157,5 +173,20 @@ public class RestauranteServicio {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(response).build();		
+	}
+	
+	@DELETE
+	@Path("{idRestaurante}/eliminarP/{timestamp}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response eliminarPedido(@PathParam("idRestaurante")long idRestaurante, @PathParam("timestamp")long timestamp, Pedido pedido) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		
+		try {
+			tm.eliminarPedido(idRestaurante, timestamp);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();		
 	}
 }

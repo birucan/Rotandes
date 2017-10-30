@@ -501,7 +501,7 @@ public class RotondAndesTM {
 				this.conn = darConexion();
 				daoPedido.setConn(conn);
 				daoIngreso.setConn(conn);
-				daoPedido.aceptarPedido(daoPedido.buscarPedidoPorTimestamp(timestamp));
+				daoPedido.aceptarPedido(timestamp);
 				daoIngreso.addIngreso(daoPedido.buscarPedidoPorTimestamp(timestamp).getPrecio(), idRestaurante);
 
 			} catch (SQLException e) {
@@ -868,6 +868,115 @@ public class RotondAndesTM {
 				}
 			}
 			
+			
+		}
+
+		public void aceptarPedidosMesa(long idMesa) throws Exception {
+			DAOTablaPedidos daoPedidos = new DAOTablaPedidos();
+			DAOTablaPedidos daoPedido = new DAOTablaPedidos();
+			DAOTablaIngresos daoIngreso = new DAOTablaIngresos();
+			DAOTablaProductos daoProductos = new DAOTablaProductos();
+			DAOTablaMenus daoMenu = new DAOTablaMenus();
+
+			
+			try 
+			{
+				List<Pedido> pedidos;
+				this.conn = darConexion();
+				daoPedido.setConn(conn);
+				daoIngreso.setConn(conn);
+				daoPedidos.setConn(conn);
+				daoProductos.setConn(conn);
+				daoMenu.setConn(conn);
+				pedidos=daoPedidos.darPedidosMesa(idMesa);
+				System.out.println(pedidos.get(0).getTimestamp());
+				
+				long timestamp;
+				long idRestaurante;
+				
+				for (int i = 0; i < pedidos.size(); i++) {
+					timestamp = pedidos.get(i).getTimestamp();
+					idRestaurante = pedidos.get(i).getIdRestaurante();
+					daoPedido.aceptarPedido(timestamp);
+					daoIngreso.addIngreso(daoPedido.buscarPedidoPorTimestamp(timestamp).getPrecio(), idRestaurante);
+					daoProductos.consumir(pedidos.get(i).getIdProducto());
+					
+					Menu menu = daoMenu.buscarMenuPorId(pedidos.get(i).getIdMenu());
+				
+					
+					daoProductos.consumir(menu.getAcom());
+					daoProductos.consumir(menu.getBebida());
+					daoProductos.consumir(menu.getEntrada());
+					daoProductos.consumir(menu.getFuerte());
+					daoProductos.consumir(menu.getPostre());
+
+				
+					
+				}
+					
+				
+				conn.commit();
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPedido.cerrarRecursos();
+					daoIngreso.cerrarRecursos();
+					daoPedidos.cerrarRecursos();
+					daoProductos.cerrarRecursos();
+					daoMenu.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+		}
+
+		public void eliminarPedido(long idRestaurante, long timestamp) throws Exception {
+			DAOTablaPedidos daoPedido = new DAOTablaPedidos();
+			
+
+			try 
+			{
+				this.conn = darConexion();
+				daoPedido.setConn(conn);
+				//!daoPedido.buscarPedidoPorTimestamp( timestamp).isAceptado() && 
+				if(daoPedido.buscarPedidoPorTimestamp(timestamp).getIdRestaurante()==idRestaurante) {
+					daoPedido.eliminar(timestamp);
+				}
+				
+				
+				
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPedido.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
 			
 		}
 

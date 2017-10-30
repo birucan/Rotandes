@@ -161,10 +161,10 @@ public class DAOTablaIngresos {
 	 */
 	public void addIngreso(long l, long idRestaurante) throws SQLException, Exception {
 
-
-		 String sql = "INSERT INTO Ingreso VALUES (";
-		  sql += "BALANCE=" + l + ",";
-     	  sql += " WHERE ID = " + idRestaurante;
+		
+		 String sql = "UPDATE INGRESO SET ";
+		  sql += "BALANCE = BALANCE + " + l;
+     	  sql += " WHERE IDRESTAURANTE = " + idRestaurante;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
