@@ -339,6 +339,39 @@ import vos.Pedido;
 			return returner;
 		}
 
+		public List<Pedido> darPedidosProd(long idProducto, long idRestaurante) throws SQLException {
+			List<Pedido> returner = new ArrayList<Pedido>();
+			Pedido foo= null;
+			boolean aceptado;
+
+			String sql = "SELECT * FROM Pedido WHERE IDPRODUCTO = "+idProducto;
+			
+				sql += " AND IDRESTAURANTE = "+ idRestaurante;
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			
+			while (rs.next()) {
+				Long timestamp = rs.getLong("TIMESTAMP");
+				Long idCliente = rs.getLong("IDCLIENTE");
+				Long idRestaurantee = rs.getLong("IDRESTAURANTE");
+				Long idProductoo = rs.getLong("IDPRODUCTO");
+				Long idMenu = rs.getLong("IDMENU");
+				Long Laceptado =rs.getLong("ACEPTADO");
+				if(Laceptado==1){
+					aceptado = true;
+				}else{
+					aceptado = false;
+				}
+				Long precio = rs.getLong("PRECIO");		
+				Long idMesaa = rs.getLong("IDMESA");
+				foo = new Pedido(timestamp, idCliente, idRestaurantee, idProductoo, idMenu, true, precio, idMesaa);
+				returner.add(foo);
+			}
+			return returner;
+		}
+
 
 
 }
