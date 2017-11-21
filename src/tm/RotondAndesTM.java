@@ -952,7 +952,7 @@ public class RotondAndesTM {
 				this.conn = darConexion();
 				daoPedido.setConn(conn);
 				//!daoPedido.buscarPedidoPorTimestamp( timestamp).isAceptado() && 
-				if(daoPedido.buscarPedidoPorTimestamp(timestamp).getIdRestaurante()==idRestaurante) {
+				if(!daoPedido.buscarPedidoPorTimestamp( timestamp).isAceptado() && daoPedido.buscarPedidoPorTimestamp(timestamp).getIdRestaurante()==idRestaurante) {
 					daoPedido.eliminar(timestamp);
 				}
 				
@@ -980,15 +980,19 @@ public class RotondAndesTM {
 			
 		}
 
-		public List<Pedido> darPedidos(long idUsuario, String parametro) throws SQLException {
+		public List<Pedido> darPedidos(long idUsuario, String parametro) throws Exception {
 			DAOTablaPedidos daoPedido = new DAOTablaPedidos();
-			
+			DAOTablaUsuarios daoUsuario = new DAOTablaUsuarios();
 
 			try 
 			{
 				this.conn = darConexion();
 				daoPedido.setConn(conn);
-					
+				daoUsuario.setConn(conn);	
+				if(daoUsuario.buscarUsuarioPorId(idUsuario).getTipoUsuario().equals("admin")) {
+					List<Pedido> returner = daoPedido.darPedidos();
+					return returner;
+				}
 				List<Pedido> returner =daoPedido.darPedidosP(idUsuario, parametro);
 				return returner;
 				
@@ -1004,6 +1008,7 @@ public class RotondAndesTM {
 			} finally {
 				try {
 					daoPedido.cerrarRecursos();
+					daoUsuario.cerrarRecursos();
 					if(this.conn!=null)
 						this.conn.close();
 				} catch (SQLException exception) {

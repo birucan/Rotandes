@@ -1,0 +1,622 @@
+{
+	"info": {
+		"name": "tomColleccion",
+		"_postman_id": "a7e75bfc-8983-ffb9-7db2-ab9ea0770253",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Rf1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":22,\"nombre\":\"test\",\"identificacion\":\"012452\",\"correo\":\"correo@ejemplo.com\", \"tipo\":\"comensal\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/usuarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"usuarios",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":23,\"nombre\":\"testR\",\"descripcion\":\"Des Ejemplo\",\"tipoComida\":\"rapida\", \"paginaWeb\":\"comida.com\", \"zona\":1}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":71,\"nombre\":\"testP\",\"descripcionES\":\"Des Ejemplo\",\"descripcionEN\":\"desEjemplo\", \"tipo\":\"bebida\", \"idRest\":\"22\", \"precio\":222}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/22/producto/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"22",
+						"producto",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf5",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"testIngrediente\",\"descripcionES\":\"Des Ejemplo\",\"descripcion\": \"idProd\":70}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/22/producto/70/ingrediente/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"22",
+						"producto",
+						"70",
+						"ingrediente",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf6",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":3,\"idRest\":0,\"idEntrada\":0, \"idFuerte\":0, \"idPostre\":0, \"idBebida\":0, \"idAcom\":0, \"precio\":0}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/1/menu",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"1",
+						"menu"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf7",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":3,\"descripcion\":\"descripcion\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/usuarios/10/zona/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"usuarios",
+						"10",
+						"zona",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf8",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"idCliente\":9, \"idProducto\":0, \"idMenu\":1}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/usuarios/9/pedido/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"usuarios",
+						"9",
+						"pedido",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf9",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"idCliente\":9, \"idProducto\":0, \"idMenu\":1}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/usuarios/9/pedido/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"usuarios",
+						"9",
+						"pedido",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rf10",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/1/pedidos/{timestamp}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"1",
+						"pedidos",
+						"{timestamp}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RQ11",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"equivalencia\":\"Tofu molido\"}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/1/producto/1/ingrediente/Carne molida",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"1",
+						"producto",
+						"1",
+						"ingrediente",
+						"Carne molida"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RQ12",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"equivalencia\":1}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/1/producto/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"1",
+						"producto",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RQ13",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/1/surtir",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"1",
+						"surtir"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RQ14",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"idCliente\":10, \"idProducto\":0, \"idMenu\":2}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/usuarios/10/pedido/no/si/no/no/no",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"usuarios",
+						"10",
+						"pedido",
+						"no",
+						"si",
+						"no",
+						"no",
+						"no"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RQ15",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"idCliente\":10, \"idProducto\":0, \"idMenu\":2},{\"idCliente\":10, \"idProducto\":0, \"idMenu\":2}]\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/usuarios/pedirPorMesa/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"usuarios",
+						"pedirPorMesa",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RQ16",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/pedidosMesa/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"pedidosMesa",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RQ17",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"timestamp\":1509208642031}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/1/eliminarP/1509208642031",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"1",
+						"eliminarP",
+						"1509208642031"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "rfc6",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"timestamp\":1509208642031}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/usuarios/1/infoPedidos/mesa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"usuarios",
+						"1",
+						"infoPedidos",
+						"mesa"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "rfc8",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"timestamp\":1509208642031}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/1/ventasProducto/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"1",
+						"ventasProducto",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
