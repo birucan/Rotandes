@@ -29,13 +29,16 @@ import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
 import dao.DAOTablaUsuarios;
 import dao.DAOTablaZonas;
+import dtm.RotondAndesDistributed;
+import jms.NonReplyException;
 import vos.Ingrediente;
 import vos.Ingreso;
 import vos.Menu;
 import vos.Pedido;
 import vos.PreferenciaCliente;
-import vos.Producto;
-import vos.Restaurante;
+import vos.ProductoOLD;
+import vos.RentabilidadRestaurante;
+import vos.RestauranteOLD;
 import vos.Usuario;
 import vos.Zona;
 
@@ -81,7 +84,10 @@ public class RotondAndesTM {
 	 * conexion a la base de datos
 	 */
 	private Connection conn;
-
+	/**
+	 * Atributo que contiene el DTM.
+	 */
+	private RotondAndesDistributed dtm;
 
 	/**
 	 * Metodo constructor de la clase rotondaAndesMaster, esta clase modela y contiene cada una de las 
@@ -93,6 +99,9 @@ public class RotondAndesTM {
 	public RotondAndesTM(String contextPathP) {
 		connectionDataPath = contextPathP + CONNECTION_DATA_FILE_NAME_REMOTE;
 		initConnectionData();
+		System.out.println("Instancing DTM...");
+		dtm = RotondAndesDistributed.getInstance(this);
+		System.out.println("Done!");
 	}
 
 	/**
@@ -200,7 +209,7 @@ public class RotondAndesTM {
 		/*
 		 * RF3
 		 */
-		public void registrarRestaurante(Restaurante foo) throws Exception {
+		public void registrarRestaurante(RestauranteOLD foo) throws Exception {
 			DAOTablaRestaurantes daoRestaurantes = new DAOTablaRestaurantes();
 			try 
 			{
@@ -234,7 +243,7 @@ public class RotondAndesTM {
 		/*
 		 * RF4
 		 */
-		public void registrarProducto(int idRestaurante, Producto producto) throws Exception {
+		public void registrarProducto(int idRestaurante, ProductoOLD producto) throws Exception {
 			DAOTablaProductos daoProductos = new DAOTablaProductos();
 			try 
 			{
@@ -456,7 +465,7 @@ public class RotondAndesTM {
 				daoproducto.setConn(conn);
 				daoMenu.setConn(conn);
 				if(daoproducto.buscarProductoPorId(pedido.getIdProducto())!=null){
-					Producto producto = daoproducto.buscarProductoPorId((long)pedido.getIdProducto());
+					ProductoOLD producto = daoproducto.buscarProductoPorId((long)pedido.getIdProducto());
 					tempPrecio+=producto.getPrecio();
 				}
 				if(daoMenu.buscarMenuPorId(pedido.getIdMenu())!=null){
@@ -594,7 +603,7 @@ public class RotondAndesTM {
 		public String darProductoMas() throws SQLException  {
 			DAOTablaMenus daoMenu = new DAOTablaMenus();
 			DAOTablaProductos daoProd = new DAOTablaProductos();
-			Producto mejor= null;
+			ProductoOLD mejor= null;
 			
 			
 			try {
@@ -728,7 +737,7 @@ public class RotondAndesTM {
 			
 		}
 
-		public void updateEquivalenciaP(int idRestaurante, int idProducto, Producto producto) throws SQLException {
+		public void updateEquivalenciaP(int idRestaurante, int idProducto, ProductoOLD producto) throws SQLException {
 			DAOTablaProductos daoProducto = new DAOTablaProductos();
 
 			try 
@@ -808,34 +817,34 @@ public class RotondAndesTM {
 				daoproducto.setConn(conn);
 				daoMenu.setConn(conn);
 				if(daoproducto.buscarProductoPorId(pedido.getIdProducto())!=null){
-					Producto producto = daoproducto.buscarProductoPorId((long)pedido.getIdProducto());
+					ProductoOLD producto = daoproducto.buscarProductoPorId((long)pedido.getIdProducto());
 					tempPrecio+=producto.getPrecio();
 				}
 				if(daoMenu.buscarMenuPorId(pedido.getIdMenu())!=null){
 					Menu menu = daoMenu.buscarMenuPorId((long) pedido.getIdMenu());
 					if(acom.equals("si")) {
 						tiene = true;
-						Producto tempA=daoproducto.buscarProductoPorId(menu.getAcom());
+						ProductoOLD tempA=daoproducto.buscarProductoPorId(menu.getAcom());
 						menu.setAcom(tempA.getEquivalencia());
 					}if(beb.equals("si")) {
 						tiene = true;
-						Producto tempB=daoproducto.buscarProductoPorId(menu.getBebida());
+						ProductoOLD tempB=daoproducto.buscarProductoPorId(menu.getBebida());
 						menu.setBebida(tempB.getEquivalencia());
 					}if(entrada.equals("si")) {
 						tiene = true;
-						Producto tempC=daoproducto.buscarProductoPorId(menu.getEntrada());
+						ProductoOLD tempC=daoproducto.buscarProductoPorId(menu.getEntrada());
 						menu.setEntrada(tempC.getEquivalencia());
 					}if(fuerte.equals("si")) {
 						tiene = true;
-						Producto tempD=daoproducto.buscarProductoPorId(menu.getFuerte());
+						ProductoOLD tempD=daoproducto.buscarProductoPorId(menu.getFuerte());
 						menu.setFuerte(tempD.getEquivalencia());
 					}if(acom.equals("si")) {
 						tiene = true;
-						Producto tempE=daoproducto.buscarProductoPorId(menu.getAcom());
+						ProductoOLD tempE=daoproducto.buscarProductoPorId(menu.getAcom());
 						menu.setAcom(tempE.getEquivalencia());
 					}if(acom.equals("si")) {
 						tiene = true;
-						Producto tempF=daoproducto.buscarProductoPorId(menu.getAcom());
+						ProductoOLD tempF=daoproducto.buscarProductoPorId(menu.getAcom());
 						menu.setAcom(tempF.getEquivalencia());
 					}
 					daoMenu.updateTemp(menu);
@@ -1054,6 +1063,84 @@ public class RotondAndesTM {
 				}
 			}
 			
+		}
+
+		public List<String> darRentabilidadv2(long idRestaurante, long timestampI, long timestampF) throws SQLException {
+			DAOTablaRestaurantes daoRest = new DAOTablaRestaurantes();
+
+			List<String> remL = new ArrayList();
+			
+			
+			try {
+				this.conn = darConexion();
+				daoRest.setConn(conn);
+				List<Long> idRests = daoRest.darRestaurantesZona(idRestaurante);
+					for (int i = 0; i < idRests.size(); i++) {
+						remL.add(this.darRentabilidad(idRests.get(i), timestampI, timestampF));
+					}
+				
+				
+			}  catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				try {
+				
+					daoRest.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return remL;
+			
+		}
+
+		public List<String> darRentabilidadv2Grand(long idRestaurante, long timestampI, long timestampF) throws Exception {
+			List<String> remL = darRentabilidadv2(idRestaurante, timestampI, timestampF);
+			try
+			{
+				List<String> resp = dtm.getRemoteRentabilidad("10/10/17,20/12/17,0,null");
+				remL.addAll(resp);
+			}
+			catch(NonReplyException e)
+			{
+				
+			}
+			return remL;
+		}
+
+		public List<RentabilidadRestaurante> darRentabilidadRestaurantes(long fecha1, long fecha2, Integer criterio, Long idProducto)throws SQLException, Exception
+		{
+			DAOTablaRestaurantes dao = new DAOTablaRestaurantes();
+			List<RentabilidadRestaurante> respuesta = null;
+			try {
+				this.conn = darConexion();
+				dao.setConn(conn);
+				respuesta = dao.darRentabilidadDeRestaurantes(fecha1, fecha2, criterio, idProducto);
+			}catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			}finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return respuesta;
 		}
 
 

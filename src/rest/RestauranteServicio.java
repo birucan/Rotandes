@@ -19,14 +19,23 @@ import tm.RotondAndesTM;
 import vos.Ingrediente;
 import vos.Menu;
 import vos.Pedido;
+import vos.ProductoOLD;
+import vos.RentabilidadRestaurante;
+import vos.RestauranteOLD;
 import vos.Producto;
+import vos.ProductoBase;
 import vos.Restaurante;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 
 @Path("restaurantes")
 public class RestauranteServicio {
 	@Context
 	private ServletContext context;
+
 	
+
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");
 	}
@@ -37,7 +46,7 @@ public class RestauranteServicio {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addrotonda(Restaurante rotonda) {
+	public Response addrotonda(RestauranteOLD rotonda) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.registrarRestaurante(rotonda);
@@ -51,7 +60,7 @@ public class RestauranteServicio {
 	@Path("/{idRestaurante}/producto")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response registrarProducto(@PathParam("idRestaurante") int idRestaurante, Producto producto){
+	public Response registrarProducto(@PathParam("idRestaurante") int idRestaurante, ProductoOLD producto){
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.registrarProducto(idRestaurante, producto);
@@ -152,7 +161,7 @@ public class RestauranteServicio {
 	@Path("{idRestaurante}/producto/{idProducto}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateEquivalenciaP(@PathParam("idRestaurante") int idRestaurante,@PathParam("idProducto")int idProducto, Producto producto) {
+	public Response updateEquivalenciaP(@PathParam("idRestaurante") int idRestaurante,@PathParam("idProducto")int idProducto, ProductoOLD producto) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		String response = "";
 		try {
@@ -206,4 +215,23 @@ public class RestauranteServicio {
 		}
 		return Response.status(200).entity(returner).build();		
 	}
+	
+	//iteracion 5
+	
+	
+	@GET
+	@Path("/{idRestaurante}/Rentabilidadv2/{timestampI}/{timestampF}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response darRentabilidadv2(@PathParam("idRestaurante")long idRestaurante,@PathParam("timestampI")long timestampI, @PathParam("timestampF")long timestampF){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<String> response = null;
+		try {
+			response = tm.darRentabilidadv2Grand(idRestaurante, timestampI, timestampF);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(response).build();
+	}
+	
 }

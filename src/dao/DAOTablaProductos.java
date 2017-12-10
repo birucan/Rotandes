@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Producto;
+import vos.ProductoOLD;
 
 public class DAOTablaProductos {
 
@@ -58,8 +58,8 @@ public class DAOTablaProductos {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<Producto> darProductos() throws SQLException, Exception {
-		ArrayList<Producto> Productos = new ArrayList<Producto>();
+	public ArrayList<ProductoOLD> darProductos() throws SQLException, Exception {
+		ArrayList<ProductoOLD> Productos = new ArrayList<ProductoOLD>();
 
 		String sql = "SELECT * FROM Producto";
 
@@ -78,7 +78,7 @@ public class DAOTablaProductos {
 			Long f = rs.getLong("EQUIVALENCIA");
 			Long g = rs.getLong("CANTIDAD");
 			Long h = rs.getLong("MAXIMO");
-			Productos.add(new Producto(id, name, a, b, c, d, e, f, g, h));
+			Productos.add(new ProductoOLD(id, name, a, b, c, d, e, f, g, h));
 		}
 		return Productos;
 	}
@@ -91,8 +91,8 @@ public class DAOTablaProductos {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<Producto> buscarProductosPorName(String name) throws SQLException, Exception {
-		ArrayList<Producto> Productos = new ArrayList<Producto>();
+	public ArrayList<ProductoOLD> buscarProductosPorName(String name) throws SQLException, Exception {
+		ArrayList<ProductoOLD> Productos = new ArrayList<ProductoOLD>();
 
 		String sql = "SELECT * FROM Producto WHERE NOMBRE ='" + name + "'";
 
@@ -111,7 +111,7 @@ public class DAOTablaProductos {
 			Long f = rs.getLong("EQUIVALENCIA");
 			Long g = rs.getLong("CANTIDAD");
 			Long h = rs.getLong("MAXIMO");
-			Productos.add(new Producto(id, name, a, b, c, d, e, f, g, h));
+			Productos.add(new ProductoOLD(id, name, a, b, c, d, e, f, g, h));
 		}
 
 		return Productos;
@@ -124,9 +124,9 @@ public class DAOTablaProductos {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public Producto buscarProductoPorId(Long id) throws SQLException, Exception 
+	public ProductoOLD buscarProductoPorId(Long id) throws SQLException, Exception 
 	{
-		Producto Producto = null;
+		ProductoOLD Producto = null;
 
 		String sql = "SELECT * FROM Producto WHERE ID =" + id;
 
@@ -145,7 +145,7 @@ public class DAOTablaProductos {
 			Long f = rs.getLong("EQUIVALENCIA");
 			Long g = rs.getLong("CANTIDAD");
 			Long h = rs.getLong("MAXIMO");
-			Producto = new Producto(id2, name, a, b, c, d, e, f, g, h);
+			Producto = new ProductoOLD(id2, name, a, b, c, d, e, f, g, h);
 		}
 
 		return Producto;
@@ -159,7 +159,7 @@ public class DAOTablaProductos {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo agregar el Producto a la base de datos
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void addProducto(Producto Producto) throws SQLException, Exception {
+	public void addProducto(ProductoOLD Producto) throws SQLException, Exception {
 		//TODO fix this by adding the new parameters to the sentence
 
 		 String sql = "INSERT INTO Producto VALUES (";
@@ -188,7 +188,7 @@ public class DAOTablaProductos {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el Producto.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void updateProducto(Producto Producto) throws SQLException, Exception {
+	public void updateProducto(ProductoOLD Producto) throws SQLException, Exception {
 
 		String sql = "UPDATE Producto SET ";
 		sql += "NAME='" + Producto.getNombre() + "',";
@@ -208,7 +208,7 @@ public class DAOTablaProductos {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el Producto.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void deleteProducto(Producto Producto) throws SQLException, Exception {
+	public void deleteProducto(ProductoOLD Producto) throws SQLException, Exception {
 
 		String sql = "DELETE FROM Producto";
 		sql += " WHERE ID = " + Producto.getId();

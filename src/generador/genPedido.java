@@ -10,7 +10,7 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 
 import vos.Pedido;
-import vos.Producto;
+import vos.ProductoOLD;
 import vos.Usuario;
 
 public class genPedido {

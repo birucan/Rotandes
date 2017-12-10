@@ -5,10 +5,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
+import vos.ProductoLocal;
+import vos.RentabilidadRestaurante;
 import vos.Restaurante;
+import vos.RestauranteOLD;
 
 public class DAOTablaRestaurantes {
+	
+	public final static Integer NINGUNO = 0;
+	public final static Integer CATEGORIA = 1;
+	public final static Integer PRODUCTO = 2;
+	public final static Integer ZONA = 3;
+	
+
 
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
@@ -56,8 +67,8 @@ public class DAOTablaRestaurantes {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<Restaurante> darRestaurantes() throws SQLException, Exception {
-		ArrayList<Restaurante> Restaurantes = new ArrayList<Restaurante>();
+	public ArrayList<RestauranteOLD> darRestaurantes() throws SQLException, Exception {
+		ArrayList<RestauranteOLD> Restaurantes = new ArrayList<RestauranteOLD>();
 
 		String sql = "SELECT * FROM Restaurante";
 
@@ -72,7 +83,7 @@ public class DAOTablaRestaurantes {
 			String b = rs.getString("TIPOCOMIDA");
 			String c = rs.getString("PAGINAWEB");
 			Long idz = rs.getLong("ZONA");
-			Restaurantes.add(new Restaurante(id, name, a, b, c, idz));
+			Restaurantes.add(new RestauranteOLD(id, name, a, b, c, idz));
 		}
 		return Restaurantes;
 	}
@@ -85,8 +96,8 @@ public class DAOTablaRestaurantes {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<Restaurante> buscarRestaurantesPorName(String name) throws SQLException, Exception {
-		ArrayList<Restaurante> Restaurantes = new ArrayList<Restaurante>();
+	public ArrayList<RestauranteOLD> buscarRestaurantesPorName(String name) throws SQLException, Exception {
+		ArrayList<RestauranteOLD> Restaurantes = new ArrayList<RestauranteOLD>();
 
 		String sql = "SELECT * FROM Restaurante WHERE NAME ='" + name + "'";
 
@@ -101,7 +112,7 @@ public class DAOTablaRestaurantes {
 			String b = rs.getString("TIPOCOMIDA");
 			String c = rs.getString("PAGINAWEB");
 			Long idz = rs.getLong("ZONA");
-			Restaurantes.add(new Restaurante(id, name, a, b, c, idz));
+			Restaurantes.add(new RestauranteOLD(id, name, a, b, c, idz));
 		}
 
 		return Restaurantes;
@@ -114,9 +125,9 @@ public class DAOTablaRestaurantes {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public Restaurante buscarRestaurantePorId(Long id) throws SQLException, Exception 
+	public RestauranteOLD buscarRestaurantePorId(Long id) throws SQLException, Exception 
 	{
-		Restaurante Restaurante = null;
+		RestauranteOLD Restaurante = null;
 
 		String sql = "SELECT * FROM Restaurante WHERE ID =" + id;
 
@@ -131,7 +142,7 @@ public class DAOTablaRestaurantes {
 			String b = rs.getString("TIPOCOMIDA");
 			String c = rs.getString("PAGINAWEB");
 			Long idz = rs.getLong("ZONA");
-			Restaurante = new Restaurante(id2, name, a, b, c, idz);
+			Restaurante = new RestauranteOLD(id2, name, a, b, c, idz);
 		}
 
 		return Restaurante;
@@ -145,7 +156,7 @@ public class DAOTablaRestaurantes {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo agregar el Restaurante a la base de datos
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void addRestaurante(Restaurante Restaurante) throws SQLException, Exception {
+	public void addRestaurante(RestauranteOLD Restaurante) throws SQLException, Exception {
 
 
 		 String sql = "INSERT INTO Restaurante VALUES (";
@@ -171,7 +182,7 @@ public class DAOTablaRestaurantes {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el Restaurante.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void updateRestaurante(Restaurante Restaurante) throws SQLException, Exception {
+	public void updateRestaurante(RestauranteOLD Restaurante) throws SQLException, Exception {
 
 		String sql = "UPDATE Restaurante SET ";
 		sql += "NAME='" + Restaurante.getNombre() + "',";
@@ -191,7 +202,7 @@ public class DAOTablaRestaurantes {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el Restaurante.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void deleteRestaurante(Restaurante Restaurante) throws SQLException, Exception {
+	public void deleteRestaurante(RestauranteOLD Restaurante) throws SQLException, Exception {
 
 		String sql = "DELETE FROM Restaurante";
 		sql += " WHERE ID = " + Restaurante.getId();
@@ -200,6 +211,145 @@ public class DAOTablaRestaurantes {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+
+	//iteracion 5
+	public List<Long> darRestaurantesZona(long idZona) throws Exception{
+		RestauranteOLD Restaurante = null;
+		List<Long> returner = new ArrayList();
+
+		String sql = "SELECT * FROM Restaurante WHERE ZONA =" + idZona;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) {
+			Long id2 = rs.getLong("ID");
+			returner.add(id2);
+		}
+
+		return returner;
+	}
+	
+	public List<RentabilidadRestaurante> darRentabilidadDeRestaurantes(long fecha1, long fecha2, Integer criterio, Long idProducto)throws SQLException, Exception
+	{
+		String sql;
+		List<RentabilidadRestaurante> respuesta = new ArrayList<RentabilidadRestaurante>();
+		List<RestauranteOLD> restaurantes = darRestaurantes();
+			for (int i = 0; i < restaurantes.size(); i++) {
+				sql = "SELECT * FROM RESTAURANTE WHERE ID = "+i;
+				PreparedStatement prepStmt = conn.prepareStatement(sql);
+				recursos.add(prepStmt);
+				ResultSet rs = prepStmt.executeQuery();
+				while(rs.next())
+				{
+					//ingreso
+					String sql1 = "SELECT * FROM INGRESO WHERE IDRESTAURANTE = "+ i;
+					PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
+					recursos.add(prepStmt);
+					ResultSet rs1 = prepStmt.executeQuery();
+					Double rentabilidad = (double) 0;
+					Double ingresos = (double) 0;
+					Double gastos = (double) 0;
+					while(rs1.next()) {
+						ingresos = (rs.getDouble("BALANCE"));
+						gastos = (ingresos/3)*2;
+						rentabilidad = ingresos/3;
+					}
+					
+					Restaurante restaurante = new Restaurante((long) i, rs.getString("NOMBRE"), rs.getString("PAGINAWEB"), null, null, gastos, null); 
+					String categoria =  "";
+					
+					//cant productos
+					String sql2 = "SELECT COUNT(TIMESTAMP) FROM PEDIDO WHERE IDRESTAURANTE = "+i+" AND TIMESTAMP > "+fecha1+" AND TIMESTAMP < "+fecha2;
+					PreparedStatement prepStmt2 = conn.prepareStatement(sql1);
+					recursos.add(prepStmt);
+					ResultSet rs2 = prepStmt.executeQuery();
+					Integer cantidadPedidos = null;
+					while(rs1.next()) {
+						cantidadPedidos= (int) rs.getLong("COUNT(TIMESTAMP)");
+					}
+
+					respuesta.add(new RentabilidadRestaurante(ingresos, gastos, rentabilidad, cantidadPedidos, restaurante, categoria, null, null));
+				}
+			}
+
 		
+//		else if(criterio.equals(PRODUCTO))
+//		{
+//			if(idProducto == null)
+//			{
+//				sql = "";
+//				PreparedStatement prepStmt = conn.prepareStatement(sql);
+//				recursos.add(prepStmt);
+//				ResultSet rs = prepStmt.executeQuery();
+//				while(rs.next())
+//				{
+//					
+//					Double rentabilidad = (rs.getDouble("INGRESOS") - rs.getDouble("GASTOS"));
+//					Restaurante restaurante = obtenerRestaurante(rs.getLong("ID_REST"));
+//					Producto producto = darProducto(rs.getLong("ID_PROD"), rs.getLong("ID_REST"));
+//					Integer cantidadPedidos = rs.getInt("NUMPEDIDOSTOTAL");
+//					Double ingresos = rs.getDouble("INGRESOS");
+//					Double gastos = rs.getDouble("GASTOS");
+//					respuesta.add(new RentabilidadRestaurante(ingresos, gastos, rentabilidad, cantidadPedidos, restaurante, null, producto, null));
+//				}
+//			}
+//			else
+//			{
+//				sql = "";
+//				PreparedStatement prepStmt = conn.prepareStatement(sql);
+//				recursos.add(prepStmt);
+//				ResultSet rs = prepStmt.executeQuery();
+//				while(rs.next())
+//				{
+//					
+//					Double rentabilidad = (rs.getDouble("INGRESOS") - rs.getDouble("GASTOS"));
+//					Restaurante restaurante = obtenerRestaurante(rs.getLong("ID_REST"));
+//					Producto producto = darProducto(rs.getLong("ID_PROD"), rs.getLong("ID_REST"));
+//					Integer cantidadPedidos = rs.getInt("NUMPEDIDOSTOTAL");
+//					Double ingresos = rs.getDouble("INGRESOS");
+//					Double gastos = rs.getDouble("GASTOS");
+//					respuesta.add(new RentabilidadRestaurante(ingresos, gastos, rentabilidad, cantidadPedidos, restaurante, null, producto, null));
+//				}
+//			}
+//		}
+//		else if(criterio.equals(ZONA))
+//		{
+//			sql = "";
+//			PreparedStatement prepStmt = conn.prepareStatement(sql);
+//			recursos.add(prepStmt);
+//			ResultSet rs = prepStmt.executeQuery();
+//			while(rs.next())
+//			{
+//				
+//				Double rentabilidad = (rs.getDouble("INGRESOS") - rs.getDouble("GASTOS"));
+//				
+//				Integer cantidadPedidos = rs.getInt("NUMPEDIDOSTOTAL");
+//				Double ingresos = rs.getDouble("INGRESOS");
+//				Double gastos = rs.getDouble("GASTOS");
+//				Zona zona = darZona(rs.getLong("ZONA"));
+//				respuesta.add(new RentabilidadRestaurante(ingresos, gastos, rentabilidad, cantidadPedidos, null, null, null, zona));
+//			}
+//		}
+//		else
+//		{
+//			sql = ""
+//			PreparedStatement prepStmt = conn.prepareStatement(sql);
+//			recursos.add(prepStmt);
+//			ResultSet rs = prepStmt.executeQuery();
+//			while(rs.next())
+//			{
+//				
+//				Double rentabilidad = (rs.getDouble("INGRESOS") - rs.getDouble("GASTOS"));
+//				Restaurante restaurante = obtenerRestaurante(rs.getLong("ID_REST"));
+//				Integer cantidadPedidos = rs.getInt("NUMPEDIDOSTOTAL");
+//				Double ingresos = rs.getDouble("INGRESOS");
+//				Double gastos = rs.getDouble("GASTOS");
+//				respuesta.add(new RentabilidadRestaurante(ingresos, gastos, rentabilidad, cantidadPedidos, restaurante, null, null, null));
+//			}
+//		}
+		return respuesta;
+	}
 	
 }

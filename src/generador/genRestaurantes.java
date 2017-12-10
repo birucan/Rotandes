@@ -30,11 +30,11 @@ public class genRestaurantes {
 			usuariosA = gen.dataExtractorA(datosA);
 			comida = gen.dataExtractorC(datosC);
 			
-			ArrayList<Restaurante> usuarios = new ArrayList<Restaurante>();
+			ArrayList<RestauranteOLD> usuarios = new ArrayList<RestauranteOLD>();
 			
 			for (int i = 0; i <100; i++) {
 				gen.getNombre(usuariosH, usuariosM, usuariosA);
-				Restaurante agregar = new Restaurante (i, apellido, apellido, apellido, apellido, i);
+				RestauranteOLD agregar = new RestauranteOLD (i, apellido, apellido, apellido, apellido, i);
 				agregar.setId((long)i);
 				agregar.setNombre(nombre +"\'s "+gen.genComida(comida));
 				agregar.setDescripcion("descripcion");
@@ -176,7 +176,7 @@ public class genRestaurantes {
 				}
 				
 			}
-		public void agregarCSV(ArrayList<Restaurante> usuarios) {
+		public void agregarCSV(ArrayList<RestauranteOLD> usuarios) {
 			String outputFile = "C:\\Users\\t.kavanagh\\Desktop\\csv\\restaurante.csv";
 			boolean alreadyExists = new File(outputFile).exists();
 
@@ -198,7 +198,7 @@ public class genRestaurantes {
 				csvOutput.endRecord();
 
 				for(int i = 0; i<usuarios.size(); i++){
-					Restaurante user = usuarios.get(i);
+					RestauranteOLD user = usuarios.get(i);
 					csvOutput.write(""+user.getId()+"");
 					csvOutput.write(user.getNombre());
 					csvOutput.write(user.getDescripcion());

@@ -9,7 +9,7 @@ import java.util.Random;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 
-import vos.Producto;
+import vos.ProductoOLD;
 import vos.Usuario;
 
 public class genProductos {
@@ -31,13 +31,13 @@ public class genProductos {
 			usuariosM = gen.dataExtractor(datosM);
 			usuariosA = gen.dataExtractorA(datosA);
 			comida = gen.dataExtractorC(datosC);
-			ArrayList<Producto> productos = new ArrayList<Producto>();
+			ArrayList<ProductoOLD> productos = new ArrayList<ProductoOLD>();
 			
 			for (int i = 0; i <10000; i++) {
 				gen.getNombre(usuariosH, usuariosM, usuariosA);
 				
 				
-				Producto agregar = new Producto(i, apellido, apellido, apellido, apellido, i, i, i, i, i);
+				ProductoOLD agregar = new ProductoOLD(i, apellido, apellido, apellido, apellido, i, i, i, i, i);
 				agregar.setId((long)i);
 				agregar.setCantidad(5000);
 				agregar.setDescripcionEN("descripcion");
@@ -185,7 +185,7 @@ public class genProductos {
 				}
 				
 			}
-		public void agregarCSV(ArrayList<Producto> productos) {
+		public void agregarCSV(ArrayList<ProductoOLD> productos) {
 			String outputFile = "C:\\Users\\t.kavanagh\\Desktop\\csv\\productos.csv";
 			boolean alreadyExists = new File(outputFile).exists();
 
@@ -211,7 +211,7 @@ public class genProductos {
 				csvOutput.endRecord();
 
 				for(int i = 0; i<productos.size(); i++){
-					Producto prod = productos.get(i);
+					ProductoOLD prod = productos.get(i);
 					csvOutput.write(""+i);
 					csvOutput.write(prod.getNombre());
 					csvOutput.write(prod.getDescripcionES());
