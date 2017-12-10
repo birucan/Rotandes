@@ -39,7 +39,7 @@ import vos.RentabilidadRestaurante;
 public class RentabilidadRestauranteMDB implements MessageListener, ExceptionListener
 {
 	public final static int TIME_OUT = 5;
-	private final static String APP = "app1";
+	private final static String APP = "app3";
 	
 	private final static String GLOBAL_TOPIC_NAME = "java:global/RMQTopicRentabilidades";
 	private final static String LOCAL_TOPIC_NAME = "java:global/RMQRentabilidadesLocal";
@@ -134,7 +134,7 @@ public class RentabilidadRestauranteMDB implements MessageListener, ExceptionLis
 	{
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println(id);
-		ExchangeMsg msg = new ExchangeMsg("rentabilidades.general.app1", APP, payload, status, id);
+		ExchangeMsg msg = new ExchangeMsg("rentabilidades.general.app3", APP, payload, status, id);
 		TopicPublisher topicPublisher = topicSession.createPublisher(dest);
 		topicPublisher.setDeliveryMode(DeliveryMode.PERSISTENT);
 		TextMessage txtMsg = topicSession.createTextMessage();

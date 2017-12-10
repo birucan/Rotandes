@@ -7,19 +7,17 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.servlet.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.ws.rs.jar"/>
 	<classpathentry kind="lib" path="javacsv.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/WildFly 10.0 Runtime">
+	<classpathentry kind="lib" path="C:/Users/t.kavanagh/Desktop/lol/jboss-ejb-api_3.2_spec-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/t.kavanagh/wildfly-10.0.0.Final/modules/com/rabbitmq/main/rabbitmq-jms-1.6.0-SNAPSHOT.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/WildFly 10.x Runtime">
 		<attributes>
-			<attribute name="owner.project.facets" value="jst.web"/>
+			<attribute name="owner.project.facets" value="jst.web;#system#"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_144">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/t.kavanagh/Desktop/lol/jboss-ejb-api_3.2_spec-1.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/t.kavanagh/wildfly-10.0.0.Final/modules/com/rabbitmq/main/rabbitmq-jms-1.6.0-SNAPSHOT.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/WildFly 10.x Runtime"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
