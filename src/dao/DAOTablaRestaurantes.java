@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import vos.ListaProductos;
+import vos.Producto;
 import vos.ProductoLocal;
 import vos.RentabilidadRestaurante;
 import vos.Restaurante;
@@ -196,16 +198,16 @@ public class DAOTablaRestaurantes {
 
 	/**
 	 * Metodo que elimina el Restaurante que entra como parametro en la base de datos.
-	 * @param Restaurante - el Restaurante a borrar. Restaurante !=  null
+	 * @param id - el Restaurante a borrar. Restaurante !=  null
 	 * <b> post: </b> se ha borrado el Restaurante en la base de datos en la transaction actual. pendiente que el Restaurante master
 	 * haga commit para que los cambios bajen a la base de datos.
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el Restaurante.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void deleteRestaurante(RestauranteOLD Restaurante) throws SQLException, Exception {
+	public void deleteRestaurante(long id) throws SQLException, Exception {
 
 		String sql = "DELETE FROM Restaurante";
-		sql += " WHERE ID = " + Restaurante.getId();
+		sql += " WHERE ID = " + id;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -246,13 +248,13 @@ public class DAOTablaRestaurantes {
 					//ingreso
 					String sql1 = "SELECT * FROM INGRESO WHERE IDRESTAURANTE = "+ i;
 					PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
-					recursos.add(prepStmt);
-					ResultSet rs1 = prepStmt.executeQuery();
+					recursos.add(prepStmt1);
+					ResultSet rs1 = prepStmt1.executeQuery();
 					Double rentabilidad = (double) 0;
 					Double ingresos = (double) 0;
 					Double gastos = (double) 0;
 					while(rs1.next()) {
-						ingresos = (rs.getDouble("BALANCE"));
+						ingresos = (rs1.getDouble("BALANCE"));
 						gastos = (ingresos/3)*2;
 						rentabilidad = ingresos/3;
 					}
@@ -263,8 +265,8 @@ public class DAOTablaRestaurantes {
 					//cant productos
 					String sql2 = "SELECT COUNT(TIMESTAMP) FROM PEDIDO WHERE IDRESTAURANTE = "+i+" AND TIMESTAMP > "+fecha1+" AND TIMESTAMP < "+fecha2;
 					PreparedStatement prepStmt2 = conn.prepareStatement(sql1);
-					recursos.add(prepStmt);
-					ResultSet rs2 = prepStmt.executeQuery();
+					recursos.add(prepStmt2);
+					ResultSet rs2 = prepStmt2.executeQuery();
 					Integer cantidadPedidos = null;
 					while(rs1.next()) {
 						cantidadPedidos= (int) rs.getLong("COUNT(TIMESTAMP)");
@@ -350,6 +352,34 @@ public class DAOTablaRestaurantes {
 //			}
 //		}
 		return respuesta;
+	}
+
+	public ListaProductos darProductos(long timestampI, long timestampF, String orderBy) throws Exception {
+		RestauranteOLD Restaurante = null;
+		ListaProductos returner = new ListaProductos(null);
+		List<Producto> productos = new ArrayList<Producto>();
+		Producto add = new Producto();
+		String sql = "SELECT * FROM PRODUCTO WHERE PRECIO > " + timestampI+ " AND PRECIO < "+timestampF+" ORDER BY "+orderBy;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while(rs.next()) {
+			add.setCategoria(rs.getString("TIPO"));
+			add.setPrecio(rs.getDouble("PRECIO"));
+			add.setDescripcionEspaniol(rs.getString("DESCRIPCIONES"));
+			add.setDescripcionIngles(rs.getString("DESCRIPCIONEN"));
+			add.setId(rs.getLong("ID"));
+			add.setNombre(rs.getString("NOMBRE"));
+			
+			productos.add(add);
+			add= new Producto();
+					
+		}
+		
+		returner.setProductos(productos);
+		return returner;
 	}
 	
 }

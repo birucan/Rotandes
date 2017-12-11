@@ -12,6 +12,8 @@ package tm;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+
+import javax.jms.JMSException;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 
 import dao.DAOTablaIngredientes;
 import dao.DAOTablaIngresos;
@@ -33,9 +40,11 @@ import dtm.RotondAndesDistributed;
 import jms.NonReplyException;
 import vos.Ingrediente;
 import vos.Ingreso;
+import vos.ListaProductos;
 import vos.Menu;
 import vos.Pedido;
 import vos.PreferenciaCliente;
+import vos.Producto;
 import vos.ProductoOLD;
 import vos.RentabilidadRestaurante;
 import vos.RestauranteOLD;
@@ -1103,8 +1112,8 @@ public class RotondAndesTM {
 			List<String> remL = darRentabilidadv2(idRestaurante, timestampI, timestampF);
 			try
 			{
-				List<String> resp = dtm.getRemoteRentabilidad("10/10/17,20/12/17,0,null");
-				remL.addAll(resp);
+				Object resp = dtm.getRemoteRentabilidades("10/10/17,20/12/17,0,null");
+				remL.add(resp.toString());
 			}
 			catch(NonReplyException e)
 			{
@@ -1143,6 +1152,112 @@ public class RotondAndesTM {
 			return respuesta;
 		}
 
+		public ListaProductos darProductosv2aa(long timestampI, long timestampF, String orderBy) throws Exception {
+			DAOTablaRestaurantes dao = new DAOTablaRestaurantes();
+			ListaProductos respuesta = null;
+			try {
+				this.conn = darConexion();
+				dao.setConn(conn);
+				respuesta = dao.darProductos(timestampI, timestampF, orderBy);
+			}catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			}finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return respuesta;
+		}
+		
+		public static final int RESTAURANTE = 1;
+		public static final int CATEGORIA = 2;
+		public static final int RANGO_PRECIOS= 3;
+		public static final int TIPO = 4;
+		
+		public ListaProductos darProductosv2(long timestampI, long timestampF, String orderBy) throws Exception {
+			ListaProductos remL = darProductosv2aa(timestampI, timestampF, orderBy);
+			try
+			{
+				ListaProductos resp = dtm.getRemoteProductos("3,"+timestampI+"-"+timestampF);
+				
+				remL.getProductos().addAll(resp.getProductos());
+			}
+			catch(NonReplyException e)
+			{
+				
+			}
+			return remL;
+		}
+		public void eliminarRestaurantev2(long id) throws Exception{
+			eliminarRestLoc(id);
+			try {
+				dtm.eliminarRestauranteRemote(id);
+			} catch (JsonGenerationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JMSException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NonReplyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 
+		private void eliminarRestLoc(long id) throws Exception {
+			DAOTablaRestaurantes dao = new DAOTablaRestaurantes(); 
+			try 
+			{
+				this.conn = darConexion();
+				dao.setConn(conn);
+				dao.deleteRestaurante(id);
+				
+				
+				
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
 
 }

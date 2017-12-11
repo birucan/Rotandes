@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
 import vos.Ingrediente;
+import vos.ListaProductos;
 import vos.Menu;
 import vos.Pedido;
 import vos.ProductoOLD;
@@ -233,5 +234,18 @@ public class RestauranteServicio {
 		}
 		return Response.status(200).entity(response).build();
 	}
-	
+	@GET
+	@Path("/Rentabilidadv2/{timestampI}/{timestampF}/{orderBy}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response darProductosv2(@PathParam("timestampI")long timestampI, @PathParam("timestampF")long timestampF, @PathParam("orderBy")String orderBy ){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		ListaProductos response = null;
+		try {
+			response = tm.darProductosv2(timestampI, timestampF, orderBy);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(response).build();
+	}
 }

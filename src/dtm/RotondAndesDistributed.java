@@ -25,11 +25,14 @@ import org.codehaus.jackson.map.JsonMappingException;
 import com.rabbitmq.jms.admin.RMQConnectionFactory;
 import com.rabbitmq.jms.admin.RMQDestination;
 
+import jms.EliminarRestauranteMDB;
 import jms.NonReplyException;
+import jms.ProductosMDB;
 import jms.RentabilidadRestauranteMDB;
 //import jms.AllVideosMDB;
 //import jms.NonReplyException;
 import tm.RotondAndesTM;
+import vos.ListaProductos;
 //import vos.ListaVideos;
 import vos.ListaRentabilidad;
 import vos.RentabilidadRestaurante;
@@ -49,6 +52,9 @@ public class RotondAndesDistributed
 	
 	//private AllVideosMDB allVideosMQ;
 	private RentabilidadRestauranteMDB rentabilidadRestaurantesMQ;
+	private ProductosMDB productosMQ;
+	//private EliminarRestauranteMDB eliminarRestaurantesMQ;
+	private EliminarRestauranteMDB eliminarRestaurantesMQ;
 	
 	private static String path;
 
@@ -60,6 +66,14 @@ public class RotondAndesDistributed
 		//allVideosMQ = new AllVideosMDB(factory, ctx);
 		rentabilidadRestaurantesMQ = new RentabilidadRestauranteMDB(factory, ctx);
 		rentabilidadRestaurantesMQ.start();
+		
+		productosMQ = new ProductosMDB(factory, ctx);
+		productosMQ.start();
+		
+		eliminarRestaurantesMQ = new EliminarRestauranteMDB(factory, ctx);
+		eliminarRestaurantesMQ.start();
+		
+		
 		//allVideosMQ.start();
 		
 	}
@@ -67,7 +81,8 @@ public class RotondAndesDistributed
 	public void stop() throws JMSException
 	{
 		rentabilidadRestaurantesMQ.close();
-		//allVideosMQ.close();
+		productosMQ.close();
+		eliminarRestaurantesMQ.close();
 	}
 	
 	/**
@@ -154,6 +169,31 @@ public class RotondAndesDistributed
 	public ListaRentabilidad getRemoteRentabilidades(String parametrosUnidos)throws Exception
 	{
 		return rentabilidadRestaurantesMQ.getRemoteRentabilidades(parametrosUnidos);
+	}
+
+	public ListaProductos getRemoteProductos(String string) throws Exception{
+		return productosMQ.getRemoteProductos(string);
+	}
+	public static final int RESTAURANTE = 1;
+	public static final int CATEGORIA = 2;
+	public static final int RANGO_PRECIOS= 3;
+	public static final int TIPO = 4;
+	public ListaProductos getLocalProductos(String payload) throws Exception {
+		String [] request = payload.split(",");
+		if(request[0].equals("1")){
+			return tm.darProductosv2aa(1487777232, 1587777232, "IDREST");
+		}else if(request[0].equals("2")){
+			return tm.darProductosv2aa(1487777232, 1587777232, "NOMBRE");
+		}else if(request[0].equals("3")){
+			return tm.darProductosv2aa(Long.parseLong(request[1]),Long.parseLong(request[2]), "NOMBRE");
+		}else{
+			return tm.darProductosv2aa(1487777232, 1587777232, "TIPO");
+		}
+	}
+
+	public void eliminarRestauranteRemote(Long id) throws JsonGenerationException, JsonMappingException, NoSuchAlgorithmException, JMSException, IOException, NonReplyException, InterruptedException {
+		eliminarRestaurantesMQ.retirarRemoteRestaurantes(""+id);
+		
 	}
 	
 	/*public ListaVideos getLocalVideos() throws Exception

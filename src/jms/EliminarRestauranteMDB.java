@@ -40,17 +40,16 @@ import com.rabbitmq.jms.admin.RMQDestination;
 
 import dtm.RotondAndesDistributed;
 import vos.ExchangeMsg;
-import vos.ListaProductos;
-import vos.Producto;
 
 
-public class ProductosMDB implements MessageListener, ExceptionListener 
+
+public class EliminarRestauranteMDB implements MessageListener, ExceptionListener 
 {
 	public final static int TIME_OUT = 5;
 	private final static String APP = "app3";
 	
-	private final static String GLOBAL_TOPIC_NAME = "java:global/RMQTopicProductos";
-	private final static String LOCAL_TOPIC_NAME = "java:global/RMQProductosLocal";
+	private final static String GLOBAL_TOPIC_NAME = "java:global/RMQTopicRetirarRestaurante";
+	private final static String LOCAL_TOPIC_NAME = "java:global/RMQRetirarRestauranteLocal";
 	
 	private final static String REQUEST = "REQUEST";
 	private final static String REQUEST_ANSWER = "REQUEST_ANSWER";
@@ -60,9 +59,9 @@ public class ProductosMDB implements MessageListener, ExceptionListener
 	private Topic globalTopic;
 	private Topic localTopic;
 	
-	private List<Producto> answer = new ArrayList<Producto>();
+	private List<Boolean> answer = new ArrayList<Boolean>();
 	
-	public ProductosMDB(TopicConnectionFactory factory, InitialContext ctx) throws JMSException, NamingException 
+	public EliminarRestauranteMDB(TopicConnectionFactory factory, InitialContext ctx) throws JMSException, NamingException 
 	{	
 		topicConnection = factory.createTopicConnection();
 		topicSession = topicConnection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -86,7 +85,7 @@ public class ProductosMDB implements MessageListener, ExceptionListener
 		topicConnection.close();
 	}
 	
-	public ListaProductos getRemoteProductos(String parametros) throws JsonGenerationException, JsonMappingException, JMSException, IOException, NonReplyException, InterruptedException, NoSuchAlgorithmException
+	public void retirarRemoteRestaurantes(String parametrosUnidos) throws JsonGenerationException, JsonMappingException, JMSException, IOException, NonReplyException, InterruptedException, NoSuchAlgorithmException
 	{
 		answer.clear();
 		String id = APP+""+System.currentTimeMillis();
@@ -94,7 +93,7 @@ public class ProductosMDB implements MessageListener, ExceptionListener
 		id = DatatypeConverter.printHexBinary(md.digest(id.getBytes())).substring(0, 8);
 //		id = new String(md.digest(id.getBytes()));
 		
-		sendMessage(parametros, REQUEST, globalTopic, id);
+		sendMessage(parametrosUnidos, REQUEST, globalTopic, id);
 		boolean waiting = true;
 
 		int count = 0;
@@ -112,8 +111,8 @@ public class ProductosMDB implements MessageListener, ExceptionListener
 		
 		if(answer.isEmpty())
 			throw new NonReplyException("Non Response");
-		ListaProductos res = new ListaProductos(answer);
-        return res;
+		//ListaConfirmaciones res = new ListaConfirmaciones(answer);
+        //return res;
 	}
 	
 	
@@ -121,7 +120,7 @@ public class ProductosMDB implements MessageListener, ExceptionListener
 	{
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println(id);
-		ExchangeMsg msg = new ExchangeMsg("videos.general.app1", APP, payload, status, id);
+		ExchangeMsg msg = new ExchangeMsg("restaurante.general.app1", APP, payload, status, id);
 		TopicPublisher topicPublisher = topicSession.createPublisher(dest);
 		topicPublisher.setDeliveryMode(DeliveryMode.PERSISTENT);
 		TextMessage txtMsg = topicSession.createTextMessage();
@@ -150,15 +149,15 @@ public class ProductosMDB implements MessageListener, ExceptionListener
 				if(ex.getStatus().equals(REQUEST))
 				{
 					RotondAndesDistributed dtm = RotondAndesDistributed.getInstance();
-					ListaProductos productos= dtm.getLocalProductos(ex.getPayload());
-					String payload = mapper.writeValueAsString(productos);
-					Topic t = new RMQDestination("", "videos.test", ex.getRoutingKey(), "", false);
+					//ListaConfirmaciones videos = dtm.retirarLocalRestaurantes(ex.getPayload());
+					String payload = mapper.writeValueAsString(1);
+					Topic t = new RMQDestination("", "restaurante.test", ex.getRoutingKey(), "", false);
 					sendMessage(payload, REQUEST_ANSWER, t, id);
 				}
 				else if(ex.getStatus().equals(REQUEST_ANSWER))
 				{
-					ListaProductos v = mapper.readValue(ex.getPayload(), ListaProductos.class);
-					answer.addAll(v.getProductos());
+					//ListaConfirmaciones v = mapper.readValue(ex.getPayload(), ListaConfirmaciones.class);
+					//answer.addAll(v.getConfirmaciones());
 				}
 			}
 			
@@ -186,4 +185,5 @@ public class ProductosMDB implements MessageListener, ExceptionListener
 	{
 		System.out.println(exception);
 	}
+
 }
